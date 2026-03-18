@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فعاليات اللاري</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#F4C430;--gold2:#FFE08A;--gold3:#D4A500;
+  --cream:#FFF8E7;--bg:#1A0A2E;--bg2:#120720;--bg3:#2D1155;
+  --accent:#FF6B9D;--accent2:#FF4081;--cyan:#00D4FF;
+  --purple:#9B59B6;--red:#FF4757;--orange:#FF6348;
+  --card:rgba(255,255,255,0.05);--radius:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(155,89,182,0.22) 0%,transparent 50%),radial-gradient(ellipse at 85% 80%,rgba(255,107,157,0.18) 0%,transparent 50%);pointer-events:none;z-index:0;}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.star{position:absolute;border-radius:50%;animation:twinkle var(--d,3s) infinite ease-in-out var(--delay,0s);}
+@keyframes twinkle{0%,100%{opacity:0.1;transform:scale(1);}50%{opacity:0.8;transform:scale(1.5);}}
+.particle{position:fixed;pointer-events:none;z-index:0;border-radius:50%;animation:floatUp var(--dur,8s) linear infinite var(--delay2,0s);opacity:0;}
+@keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:0.4;}90%{opacity:0.2;}100%{transform:translateY(-10vh) scale(1);opacity:0;}}
+.lantern-wrap{position:fixed;top:0;left:0;right:0;z-index:1;pointer-events:none;display:flex;justify-content:space-around;padding:0 10px;}
+.lantern{width:28px;height:44px;border-radius:4px 4px 12px 12px;position:relative;animation:sway var(--sw,3s) ease-in-out infinite var(--sd,0s);transform-origin:top center;}
+.lantern::before{content:'';position:absolute;top:-18px;left:50%;transform:translateX(-50%);width:2px;height:18px;background:var(--gold2);}
+.lantern::after{content:'✦';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;color:rgba(255,255,255,0.7);}
+@keyframes sway{0%,100%{transform:rotate(-10deg);}50%{transform:rotate(10deg);}}
+.screen{display:none;position:relative;z-index:2;}
+.screen.active{display:flex;flex-direction:column;min-height:100vh;}
+.brand-logo{text-align:center;padding:65px 20px 20px;}
+.logo-badge{display:inline-block;background:linear-gradient(135deg,rgba(155,89,182,0.25),rgba(255,107,157,0.15));border:1px solid rgba(244,196,48,0.3);border-radius:14px;padding:7px 22px;font-size:0.78rem;letter-spacing:3px;color:var(--gold2);margin-bottom:12px;}
+.game-title-display{font-size:clamp(2.8rem,9vw,5.5rem);font-weight:900;line-height:1;background:linear-gradient(135deg,#FFE08A 0%,#F4C430 30%,#FF6B9D 60%,#C39BD3 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 20px rgba(244,196,48,0.5));animation:titlePulse 4s ease-in-out infinite;}
+@keyframes titlePulse{0%,100%{filter:drop-shadow(0 0 18px rgba(244,196,48,0.4));}50%{filter:drop-shadow(0 0 32px rgba(255,107,157,0.6));}}
+.larry-sub{font-size:clamp(0.8rem,2.5vw,1rem);color:rgba(255,255,255,0.35);margin-top:6px;letter-spacing:4px;}
+.larry-moon{font-size:clamp(2rem,5vw,3rem);display:block;animation:moonFloat 3s ease-in-out infinite;margin-bottom:8px;}
+@keyframes moonFloat{0%,100%{transform:translateY(0) rotate(-5deg);}50%{transform:translateY(-12px) rotate(5deg);}}
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);backdrop-filter:blur(12px);padding:22px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(244,196,48,0.35),transparent);}
+.card-gold{border-color:rgba(244,196,48,0.2);background:rgba(244,196,48,0.03);}
+.card-purple{border-color:rgba(155,89,182,0.25);background:rgba(155,89,182,0.05);}
+.section-title{font-size:1.15rem;font-weight:800;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.btn{padding:12px 26px;border-radius:50px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:700;transition:all 0.22s;display:inline-flex;align-items:center;gap:8px;position:relative;}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08);}
+.btn:active{transform:translateY(0);}
+.btn-gold{background:linear-gradient(135deg,#FFD700,#F4A800);color:#1A0A2E;box-shadow:0 4px 22px rgba(244,196,48,0.45);}
+.btn-pink{background:linear-gradient(135deg,#FF6B9D,#FF4081);color:white;box-shadow:0 4px 22px rgba(255,107,157,0.45);}
+.btn-cyan{background:linear-gradient(135deg,#00D4FF,#0094FF);color:#0A0320;box-shadow:0 4px 20px rgba(0,212,255,0.35);}
+.btn-red{background:linear-gradient(135deg,#FF4757,#C0392B);color:white;box-shadow:0 4px 18px rgba(255,71,87,0.35);}
+.btn-ghost{background:transparent;border:2px solid rgba(244,196,48,0.35);color:var(--gold2);}
+.btn-ghost:hover{background:rgba(244,196,48,0.08);}
+.btn-ghost-pink{background:transparent;border:2px solid rgba(255,107,157,0.4);color:#FF6B9D;}
+.btn-sm{padding:8px 16px;font-size:0.87rem;}
+.btn-lg{padding:15px 40px;font-size:1.15rem;}
+.btn-xl{padding:18px 50px;font-size:1.25rem;}
+.btn-full{width:100%;justify-content:center;}
+input[type=text],input[type=number],textarea,select{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.11);border-radius:12px;color:var(--cream);font-family:'Tajawal',sans-serif;font-size:1rem;padding:11px 15px;width:100%;transition:all 0.2s;direction:rtl;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,0.09);box-shadow:0 0 0 3px rgba(244,196,48,0.1);}
+select option{background:#1A0A2E;}
+label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:5px;font-weight:600;}
+.form-row{display:grid;gap:12px;margin-bottom:14px;}
+.form-row.cols2{grid-template-columns:1fr 1fr;}
+.container{max-width:900px;margin:0 auto;padding:0 16px 80px;width:100%;}
+.tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;min-height:38px;}
+.tag{border-radius:20px;padding:5px 12px;font-size:0.82rem;display:flex;align-items:center;gap:6px;color:var(--cream);}
+.tag span.txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;}
+.tag .remove{background:none;border:none;color:rgba(255,255,255,0.35);cursor:pointer;font-size:1rem;padding:0;flex-shrink:0;}
+.tag .remove:hover{color:var(--red);}
+.tag.question{background:rgba(0,148,255,0.12);border:1px solid rgba(0,148,255,0.3);}
+.tag.challenge{background:rgba(155,89,182,0.12);border:1px solid rgba(155,89,182,0.35);}
+.counter-row{display:flex;align-items:center;gap:14px;justify-content:center;margin:14px 0;}
+.counter-btn{width:50px;height:50px;border-radius:50%;border:2px solid rgba(244,196,48,0.45);background:transparent;color:var(--gold);font-size:1.7rem;cursor:pointer;transition:all 0.2s;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.counter-btn:hover{background:var(--gold);color:var(--bg2);}
+.counter-val{font-size:3.2rem;font-weight:900;color:var(--gold);min-width:70px;text-align:center;text-shadow:0 0 22px rgba(244,196,48,0.5);}
+.player-badge{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:11px;padding:9px 13px;display:flex;align-items:center;gap:9px;}
+.player-num{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg2);font-weight:900;font-size:0.95rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.players-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:9px;margin-top:11px;}
+.tabs{display:flex;gap:4px;margin-bottom:18px;background:rgba(0,0,0,0.25);border-radius:13px;padding:4px;}
+.tab-btn{flex:1;padding:10px 6px;border:none;border-radius:10px;background:transparent;color:rgba(255,255,255,0.38);font-family:'Tajawal',sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer;transition:all 0.2s;}
+.tab-btn.active{background:rgba(244,196,48,0.12);color:var(--gold);}
+.steps{display:flex;justify-content:center;gap:8px;margin:8px 0 22px;}
+.step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.14);transition:all 0.3s;}
+.step-dot.active{background:var(--gold);transform:scale(1.4);box-shadow:0 0 8px rgba(244,196,48,0.6);}
+.step-dot.done{background:var(--accent);}
+.alert{padding:10px 15px;border-radius:11px;margin:7px 0;font-weight:600;font-size:0.88rem;display:flex;align-items:center;gap:8px;}
+.alert-warn{background:rgba(255,99,72,0.1);border:1px solid rgba(255,99,72,0.28);color:#FF8A75;}
+.alert-info{background:rgba(0,148,255,0.08);border:1px solid rgba(0,148,255,0.22);color:#74BCFF;}
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(244,196,48,0.18),transparent);margin:18px 0;}
+.game-header{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;background:rgba(0,0,0,0.45);border-bottom:1px solid rgba(255,255,255,0.05);position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);gap:8px;flex-wrap:wrap;}
+.game-header-title{font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.info-chip{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.09);border-radius:30px;padding:5px 13px;font-size:0.83rem;font-weight:700;display:flex;align-items:center;gap:5px;}
+.info-chip span{color:var(--gold);}
+.progress-wrap{height:5px;background:rgba(255,255,255,0.05);border-radius:5px;margin:0 0 22px;}
+.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width 0.6s ease;box-shadow:0 0 10px rgba(255,107,157,0.45);}
+.phase-header{text-align:center;background:linear-gradient(135deg,rgba(155,89,182,0.12),rgba(255,107,157,0.08));border:1px solid rgba(255,107,157,0.18);border-radius:20px;padding:20px 16px;margin-bottom:22px;}
+.phase-label{font-size:0.8rem;color:rgba(255,255,255,0.38);letter-spacing:2px;margin-bottom:4px;}
+.phase-name{font-size:2rem;font-weight:900;color:var(--gold);}
+.phase-sub{font-size:0.88rem;color:rgba(255,255,255,0.42);margin-top:5px;}
+.phase-num-badge{display:inline-block;background:linear-gradient(135deg,rgba(244,196,48,0.18),rgba(255,107,157,0.12));border:1px solid rgba(244,196,48,0.28);border-radius:30px;padding:4px 16px;font-size:0.9rem;font-weight:700;color:var(--gold2);margin-top:8px;}
+
+/* ====== ENVELOPES BIG & BEAUTIFUL ====== */
+.envelopes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:18px;padding:6px;}
+.envelope{
+  aspect-ratio:3/4.2;border-radius:24px;cursor:pointer;position:relative;
+  transition:transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275),box-shadow 0.3s;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;
+  animation:envAppear 0.5s cubic-bezier(0.175,0.885,0.32,1.275) backwards;
+  overflow:hidden;
+}
+/* Sheen overlay */
+.envelope::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,0.22) 0%,transparent 45%,rgba(0,0,0,0.12) 100%);pointer-events:none;border-radius:24px;}
+/* Bottom flap shadow */
+.envelope::after{content:'';position:absolute;bottom:0;left:0;right:0;height:32%;background:rgba(0,0,0,0.18);clip-path:polygon(0 50%,50% 0,100% 50%,100% 100%,0 100%);pointer-events:none;}
+@keyframes envAppear{from{opacity:0;transform:scale(0.55) rotate(-10deg);}to{opacity:1;transform:scale(1) rotate(0);}}
+.envelope:hover:not(.opened){transform:translateY(-12px) scale(1.07) rotate(1deg);box-shadow:0 24px 60px rgba(0,0,0,0.55),0 0 0 2.5px rgba(244,196,48,0.65),0 0 40px rgba(244,196,48,0.25);z-index:10;}
+.envelope.opened{opacity:0.25;cursor:default;filter:grayscale(0.9) brightness(0.55);transform:scale(0.92);}
+.env-num-bg{position:absolute;bottom:12px;right:12px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.38);border:2px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:900;color:white;z-index:3;}
+.env-big-icon{font-size:3.5rem;filter:drop-shadow(0 5px 10px rgba(0,0,0,0.45));z-index:2;position:relative;transition:transform 0.3s;}
+.envelope:hover:not(.opened) .env-big-icon{transform:scale(1.2) rotate(8deg);}
+.env-label{font-size:1rem;font-weight:800;color:white;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,0.7);z-index:2;position:relative;padding:0 8px;line-height:1.2;}
+/* Colors */
+.ec1{background:linear-gradient(160deg,#FF7B7B,#C0392B,#6B0000);}
+.ec2{background:linear-gradient(160deg,#5EE7E0,#1A8C87,#0A4848);}
+.ec3{background:linear-gradient(160deg,#B8A9FF,#7C6EE0,#3A2090);}
+.ec4{background:linear-gradient(160deg,#FFB347,#E67E22,#8C3D00);}
+.ec5{background:linear-gradient(160deg,#FF9ED6,#E91E8C,#6B0040);}
+.ec6{background:linear-gradient(160deg,#FFF176,#F4C430,#8C6000);}
+.ec7{background:linear-gradient(160deg,#90CAF9,#1565C0,#0A2A6E);}
+.ec8{background:linear-gradient(160deg,#80EAC4,#00897B,#004D40);}
+.ec9{background:linear-gradient(160deg,#FF8A80,#E53935,#7F0000);}
+
+.roulette-wrap{text-align:center;background:linear-gradient(135deg,rgba(155,89,182,0.09),rgba(0,212,255,0.04));border:1px solid rgba(155,89,182,0.2);border-radius:24px;padding:30px 16px;}
+#roulette-canvas{display:block;margin:0 auto;max-width:340px;width:90%;cursor:pointer;filter:drop-shadow(0 0 35px rgba(155,89,182,0.45));transition:filter 0.3s;}
+#roulette-canvas:hover{filter:drop-shadow(0 0 55px rgba(244,196,48,0.55));}
+.prize-wrap{text-align:center;background:linear-gradient(135deg,rgba(255,107,157,0.09),rgba(244,196,48,0.04));border:1px solid rgba(255,107,157,0.2);border-radius:24px;padding:30px 16px;}
+#prize-canvas{display:block;margin:0 auto;max-width:350px;width:90%;cursor:pointer;filter:drop-shadow(0 0 35px rgba(255,107,157,0.45));}
+.spin-result{font-size:1.7rem;font-weight:900;color:var(--gold);text-align:center;margin:18px 0;animation:popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);text-shadow:0 0 18px rgba(244,196,48,0.55);}
+@keyframes popIn{0%{transform:scale(0.3) rotate(-10deg);opacity:0;}70%{transform:scale(1.12) rotate(2deg);}100%{transform:scale(1) rotate(0);opacity:1;}}
+.prize-result-box{background:linear-gradient(135deg,rgba(255,107,157,0.14),rgba(244,196,48,0.08));border:2px solid rgba(255,107,157,0.38);border-radius:18px;padding:18px;margin:14px 0;animation:popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);}
+.prize-result-label{font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:5px;}
+.prize-result-text{font-size:2rem;font-weight:900;color:var(--gold);}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:200;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(8px);}
+.modal-overlay.open{display:flex;}
+.modal{background:linear-gradient(160deg,#210738 0%,#2D1155 100%);border:1px solid rgba(255,107,157,0.28);border-radius:26px;padding:34px 26px;max-width:520px;width:100%;text-align:center;animation:modalIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);box-shadow:0 20px 80px rgba(0,0,0,0.8);}
+@keyframes modalIn{from{transform:scale(0.6) translateY(40px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.modal-icon{font-size:3.5rem;margin-bottom:8px;display:block;animation:bounce 1.5s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.modal-type-badge{display:inline-block;padding:5px 16px;border-radius:20px;font-size:0.83rem;font-weight:700;margin-bottom:14px;letter-spacing:1px;}
+.badge-q{background:rgba(0,148,255,0.18);border:1px solid rgba(0,148,255,0.38);color:#74BCFF;}
+.badge-c{background:rgba(155,89,182,0.18);border:1px solid rgba(155,89,182,0.45);color:#C39BD3;}
+.modal-title{font-size:1.3rem;font-weight:900;color:var(--gold);margin-bottom:5px;}
+.modal-body{font-size:1.35rem;font-weight:700;line-height:1.6;color:var(--cream);margin:14px 0 26px;padding:20px;background:rgba(255,255,255,0.05);border-radius:14px;border:1px solid rgba(255,255,255,0.07);min-height:80px;display:flex;align-items:center;justify-content:center;}
+.modal-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.score-row{display:flex;align-items:center;gap:13px;padding:13px 16px;border-radius:13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);margin-bottom:9px;}
+.score-row:first-child{background:rgba(244,196,48,0.09);border-color:rgba(244,196,48,0.3);box-shadow:0 0 25px rgba(244,196,48,0.15);}
+.score-rank{font-size:1.5rem;min-width:42px;text-align:center;}
+.score-name{flex:1;font-weight:700;font-size:1.05rem;}
+.score-pts{background:linear-gradient(135deg,rgba(244,196,48,0.18),rgba(255,107,157,0.12));border:1px solid rgba(244,196,48,0.28);border-radius:30px;padding:4px 14px;font-size:1.05rem;font-weight:900;color:var(--gold);}
+.wrong-turn-banner{background:linear-gradient(135deg,rgba(255,71,87,0.13),rgba(255,99,72,0.08));border:1px solid rgba(255,71,87,0.28);border-radius:16px;padding:18px 20px;text-align:center;margin-bottom:18px;animation:popIn 0.4s ease;}
+.wtb-icon{font-size:2.8rem;display:block;margin-bottom:6px;}
+.wtb-title{font-size:1.2rem;font-weight:900;color:#FF8A8A;margin-bottom:3px;}
+.wtb-sub{font-size:0.87rem;color:rgba(255,255,255,0.4);}
+.prize-item{display:flex;gap:8px;margin-bottom:9px;}
+.confetti-piece{position:fixed;z-index:999;pointer-events:none;animation:confettiFall linear forwards;border-radius:2px;}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(105vh) rotate(900deg);opacity:0;}}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:13px;margin-top:22px;}
+.feature-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:15px;padding:18px;text-align:center;transition:all 0.2s;}
+.feature-card:hover{background:rgba(255,107,157,0.05);border-color:rgba(255,107,157,0.2);transform:translateY(-3px);}
+.feature-icon{font-size:2.2rem;margin-bottom:7px;}
+.feature-title{font-weight:700;color:var(--gold2);margin-bottom:3px;font-size:0.95rem;}
+.feature-desc{font-size:0.8rem;color:rgba(255,255,255,0.38);line-height:1.5;}
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.sum-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px;text-align:center;}
+.sum-val{font-size:1.8rem;font-weight:900;color:var(--gold);}
+.sum-label{font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:2px;}
+.game-name-preview{text-align:center;margin:6px 0 12px;font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--gold2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;min-height:48px;}
+.name-suggestions{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;}
+.hidden{display:none!important;}
+@media(max-width:500px){
+  .form-row.cols2{grid-template-columns:1fr;}
+  .modal-btns{flex-direction:column;}
+  .envelopes-grid{grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:12px;}
+  .env-big-icon{font-size:2.8rem;}
+  .env-label{font-size:0.88rem;}
+}
+</style>
+</head>
+<body>
+<div class="stars" id="starsContainer"></div>
+<div class="lantern-wrap" id="lanternWrap"></div>
+
+<!-- =========== WELCOME =========== -->
+<div class="screen active" id="screenWelcome">
+  <div class="brand-logo">
+    <div class="logo-badge">🎊 لعبة العائلة</div>
+    <span class="larry-moon">🌙</span>
+    <div class="game-title-display" id="welcomeTitle">فعاليات اللاري</div>
+    <div class="larry-sub">✦ عيد مبارك ✦</div>
+  </div>
+  <div class="container">
+    <div class="card card-gold" style="text-align:center;margin-bottom:18px;">
+      <p style="font-size:1.05rem;color:rgba(255,255,255,0.58);line-height:1.95;margin-bottom:22px;">لعبة عائلية لإحياء أجواء العيد 🌟<br>أظرف مليئة بالأسئلة والتحديات<br>روليت لاختيار اللاعب • دوامة الجوائز!</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-gold btn-xl" onclick="goTo('screenSetup')">🎮 ابدأ اللعبة</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('rulesModal').classList.add('open')">📋 قواعد اللعبة</button>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">✏️</div><div class="feature-title">سمّ لعبتك</div><div class="feature-desc">اختر اسماً يناسب تجمّعك</div></div>
+      <div class="feature-card"><div class="feature-icon">✉️</div><div class="feature-title">أظرف مميزة</div><div class="feature-desc">بمضاعفات الـ3 وتوزيع عشوائي</div></div>
+      <div class="feature-card"><div class="feature-icon">🎡</div><div class="feature-title">روليت اختيار</div><div class="feature-desc">تختار اللاعب بشكل عادل</div></div>
+      <div class="feature-card"><div class="feature-icon">🎁</div><div class="feature-title">دوامة الجوائز</div><div class="feature-desc">للفائزين بالأسئلة</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== SETUP =========== -->
+<div class="screen" id="screenSetup">
+  <div class="brand-logo" style="padding-top:58px;padding-bottom:8px;">
+    <div class="game-title-display" style="font-size:clamp(1.7rem,5vw,2.8rem);">إعداد اللعبة</div>
+  </div>
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" id="tab1btn" onclick="switchTab(1)">① الاسم والمحتوى</button>
+      <button class="tab-btn" id="tab2btn" onclick="switchTab(2)">② الأظرف والجوائز</button>
+      <button class="tab-btn" id="tab3btn" onclick="switchTab(3)">③ اللاعبون</button>
+    </div>
+    <div class="steps"><div class="step-dot active" id="sd1"></div><div class="step-dot" id="sd2"></div><div class="step-dot" id="sd3"></div></div>
+
+    <!-- TAB 1 -->
+    <div id="tab1">
+      <div class="card card-gold" style="margin-bottom:14px;">
+        <div class="section-title">✨ اسم اللعبة</div>
+        <div class="form-row">
+          <div>
+            <label>اختر اسماً مميزاً للعبتك</label>
+            <input type="text" id="gameNameInput" placeholder="مثال: فعاليات العيد / يمعتنا / ليلة العيد" oninput="updateGameNamePreview()" value="فعاليات اللاري">
+          </div>
+        </div>
+        <div class="game-name-preview" id="gameNamePreview">فعاليات اللاري</div>
+        <div class="name-suggestions">
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('فعاليات اللاري')">فعاليات اللاري</button>
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('فعاليات العيد')">فعاليات العيد</button>
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('يمعتنا 🎊')">يمعتنا 🎊</button>
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('ليلة العيد ✨')">ليلة العيد ✨</button>
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('تحدي العيلة')">تحدي العيلة</button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="card" style="margin-bottom:13px;">
+        <div class="section-title">❓ إضافة سؤال</div>
+        <div class="form-row"><input type="text" id="qInput" placeholder="مثال: ما هو الشهر الذي يصوم فيه المسلمون؟" onkeydown="if(event.key==='Enter')addItem('q')"></div>
+        <button class="btn btn-cyan btn-sm" onclick="addItem('q')">+ إضافة سؤال</button>
+      </div>
+      <div class="card" style="margin-bottom:13px;">
+        <div class="section-title">🎯 إضافة تحدي</div>
+        <div class="form-row"><input type="text" id="cInput" placeholder="مثال: قل 5 أسماء أطعمة العيد في 10 ثوانٍ!" onkeydown="if(event.key==='Enter')addItem('c')"></div>
+        <button class="btn btn-ghost-pink btn-sm" onclick="addItem('c')">+ إضافة تحدي</button>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:11px;">
+          <div class="section-title" style="margin-bottom:0;">📝 القائمة <span id="itemCount" style="background:rgba(244,196,48,0.13);border:1px solid rgba(244,196,48,0.28);border-radius:20px;padding:2px 10px;font-size:0.83rem;">0</span></div>
+          <div style="display:flex;gap:7px;">
+            <button class="btn btn-ghost btn-sm" onclick="loadDefaults()">تحميل افتراضي</button>
+            <button class="btn btn-sm" style="background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.25);color:#FF8A8A;" onclick="clearItems()">مسح الكل</button>
+          </div>
+        </div>
+        <div class="alert alert-info">💡 تُوزَّع الأسئلة والتحديات عشوائياً على الأظرف</div>
+        <div id="itemList" class="tag-list"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:18px;">
+        <button class="btn btn-gold" onclick="switchTab(2)">التالي ← الأظرف والجوائز</button>
+      </div>
+    </div>
+
+    <!-- TAB 2 -->
+    <div id="tab2" class="hidden">
+      <div class="card card-gold" style="margin-bottom:14px;">
+        <div class="section-title">✉️ عدد الأظرف</div>
+        <p style="font-size:0.86rem;color:rgba(255,255,255,0.4);margin-bottom:11px;">بمضاعفات 3 — من 3 إلى 30 ظرف</p>
+        <div class="counter-row">
+          <button class="counter-btn" onclick="changeEnvCount(-3)">−</button>
+          <div class="counter-val" id="envCountDisplay">9</div>
+          <button class="counter-btn" onclick="changeEnvCount(3)">+</button>
+        </div>
+      </div>
+      <div class="card card-purple">
+        <div class="section-title">🎁 جوائز الدوامة</div>
+        <p style="font-size:0.86rem;color:rgba(255,255,255,0.4);margin-bottom:13px;">الجوائز التي تظهر عند دوران دوامة الجوائز</p>
+        <div id="prizeInputs"></div>
+        <div style="display:flex;gap:8px;margin-top:11px;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="addPrizeField()">+ إضافة جائزة</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadDefaultPrizes()">تحميل جوائز افتراضية</button>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:18px;gap:12px;flex-wrap:wrap;">
+        <button class="btn btn-ghost" onclick="switchTab(1)">← السابق</button>
+        <button class="btn btn-gold" onclick="switchTab(3)">التالي ← اللاعبون</button>
+      </div>
+    </div>
+
+    <!-- TAB 3 -->
+    <div id="tab3" class="hidden">
+      <div class="card" style="margin-bottom:14px;">
+        <div class="section-title">👥 إضافة لاعبين</div>
+        <div class="form-row cols2">
+          <div><label>اسم اللاعب</label><input type="text" id="playerInput" placeholder="أدخل الاسم" onkeydown="if(event.key==='Enter')addPlayer()"></div>
+          <div style="display:flex;align-items:flex-end;"><button class="btn btn-pink btn-full" onclick="addPlayer()">+ إضافة</button></div>
+        </div>
+        <div id="playersList" class="players-grid"></div>
+        <div style="margin-top:11px;"><button class="btn btn-ghost btn-sm" onclick="addDefaultPlayers()">إضافة لاعبين تجريبيين</button></div>
+      </div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="section-title">📊 ملخص الإعداد</div>
+        <div class="sum-grid" id="summaryGrid"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:18px;gap:12px;flex-wrap:wrap;">
+        <button class="btn btn-ghost" onclick="switchTab(2)">← السابق</button>
+        <button class="btn btn-gold btn-lg" onclick="startGame()">🚀 ابدأ اللعبة!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== GAME =========== -->
+<div class="screen" id="screenGame">
+  <div class="game-header">
+    <div class="game-header-title" id="gameHeaderTitle">فعاليات اللاري 🎊</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;">
+      <div class="info-chip">✉️ <span id="envsLeft">-</span></div>
+      <div class="info-chip">👥 <span id="playersCount">-</span></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="if(confirm('خروج من اللعبة؟'))goTo('screenWelcome')">✕</button>
+  </div>
+  <div class="container">
+    <div class="progress-wrap"><div class="progress-fill" id="gameProgress" style="width:0%"></div></div>
+
+    <!-- ROULETTE -->
+    <div id="phaseRoulette">
+      <div class="phase-header">
+        <div class="phase-label">المرحلة الحالية</div>
+        <div class="phase-name">🎡 روليت الاختيار</div>
+        <div class="phase-sub">دوّر الروليت لاختيار اللاعب التالي</div>
+      </div>
+      <div class="roulette-wrap">
+        <canvas id="roulette-canvas" width="340" height="340" onclick="spinRoulette()"></canvas>
+        <div id="spinResult" class="spin-result hidden"></div>
+        <div id="rouletteBtn" style="margin-top:20px;text-align:center;">
+          <button class="btn btn-gold btn-xl" onclick="spinRoulette()">🎡 دوّر الروليت!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENVELOPES -->
+    <div id="phaseEnvelopes" class="hidden">
+      <div class="phase-header">
+        <div class="phase-label">الآن دور</div>
+        <div class="phase-name" id="activePlayerName">-</div>
+        <div class="phase-num-badge" id="activePlayerNum">رقم -</div>
+        <div class="phase-sub">اختر ظرفك!</div>
+      </div>
+      <div class="envelopes-grid" id="envelopesGrid"></div>
+    </div>
+
+    <!-- PRIZE -->
+    <div id="phasePrize" class="hidden">
+      <div class="phase-header" style="background:linear-gradient(135deg,rgba(255,107,157,0.13),rgba(244,196,48,0.06));border-color:rgba(255,107,157,0.25);">
+        <div class="phase-label">🎉 أجاب صح!</div>
+        <div class="phase-name" id="prizePlayerName">-</div>
+        <div class="phase-sub">دوّر دوامة الجوائز!</div>
+      </div>
+      <div class="prize-wrap">
+        <canvas id="prize-canvas" width="360" height="360" onclick="spinPrizeWheel()"></canvas>
+        <div id="prizeResultBox" class="prize-result-box hidden">
+          <div class="prize-result-label">🎊 الجائزة هي</div>
+          <div class="prize-result-text" id="prizeResultText">-</div>
+        </div>
+        <div id="prizeBtn" style="margin-top:18px;text-align:center;">
+          <button class="btn btn-gold btn-xl" onclick="spinPrizeWheel()">🎁 دوّر دوامة الجوائز!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== RESULTS =========== -->
+<div class="screen" id="screenResults">
+  <div class="brand-logo">
+    <span class="larry-moon">🏆</span>
+    <div class="game-title-display">نهاية اللعبة!</div>
+    <div class="larry-sub">كل عام وأنتم بخير 🌙✨</div>
+  </div>
+  <div class="container">
+    <div class="card card-gold" style="margin-bottom:20px;">
+      <div class="section-title" style="justify-content:center;font-size:1.3rem;">🥇 لوحة الشرف</div>
+      <div id="finalScores"></div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-gold btn-xl" onclick="restartGame()">🔄 لعب مجدداً</button>
+      <button class="btn btn-ghost" onclick="goTo('screenWelcome')">🏠 الرئيسية</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========== MODAL: CARD =========== -->
+<div class="modal-overlay" id="cardModal">
+  <div class="modal">
+    <span class="modal-icon" id="modalIcon">✉️</span>
+    <div class="modal-type-badge" id="modalBadge">سؤال</div>
+    <div class="modal-title" id="modalTitle">السؤال</div>
+    <div class="modal-body" id="modalBody">-</div>
+    <div class="modal-btns">
+      <button class="btn btn-cyan btn-lg" onclick="handleAnswer(true)">✅ أجاب صح</button>
+      <button class="btn btn-red btn-lg" onclick="handleAnswer(false)">❌ أجاب غلط</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========== MODAL: RULES =========== -->
+<div class="modal-overlay" id="rulesModal">
+  <div class="modal" style="max-width:570px;text-align:right;">
+    <span class="modal-icon" style="display:block;text-align:center;">📋</span>
+    <div class="modal-title" style="text-align:center;font-size:1.5rem;margin-bottom:18px;">قواعد اللعبة</div>
+    <div style="line-height:2.2;font-size:0.93rem;color:rgba(255,255,255,0.65);">
+      <p>1️⃣ <strong style="color:var(--gold);">منسق اللعبة</strong> يضع الأسئلة والتحديات والجوائز</p>
+      <p>2️⃣ يختار <strong style="color:var(--gold);">اسم اللعبة</strong> الذي يناسب تجمّعه</p>
+      <p>3️⃣ يحدد <strong style="color:var(--gold);">عدد الأظرف</strong> بمضاعفات الـ3</p>
+      <p>4️⃣ كل لاعب يُعطى <strong style="color:var(--gold);">رقم عشوائي</strong> سري</p>
+      <p>5️⃣ <strong style="color:var(--accent);">الروليت</strong> تختار اللاعب عبر رقمه</p>
+      <p>6️⃣ اللاعب يختار ظرفه ويجيب على السؤال أو التحدي</p>
+      <p>7️⃣ ✅ إجابة صحيحة ← <strong style="color:var(--gold);">دوامة الجوائز</strong></p>
+      <p>8️⃣ ❌ إجابة خاطئة ← <strong style="color:#FF8A8A;">ينتهي الدور</strong> وتدور الروليت لشخص آخر</p>
+      <p>9️⃣ تستمر اللعبة حتى تنتهي جميع الأظرف 🎊</p>
+    </div>
+    <div style="text-align:center;margin-top:22px;">
+      <button class="btn btn-gold btn-lg" onclick="document.getElementById('rulesModal').classList.remove('open')">فهمت! 👍</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== INIT DECORATIONS =====
+(function(){
+  const sc=document.getElementById('starsContainer');
+  const cols=['#FFE08A','#FF6B9D','#C39BD3','#74BCFF','#ffffff'];
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div');s.className='star';
+    const sz=Math.random()*3+1;const col=cols[Math.floor(Math.random()*cols.length)];
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;background:${col};--d:${2+Math.random()*5}s;--delay:${Math.random()*6}s;`;
+    sc.appendChild(s);
+  }
+  const pcols=['rgba(244,196,48,0.55)','rgba(255,107,157,0.45)','rgba(195,155,211,0.45)'];
+  for(let i=0;i<18;i++){
+    const p=document.createElement('div');p.className='particle';
+    const sz=3+Math.random()*5;
+    p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}vw;background:${pcols[Math.floor(Math.random()*pcols.length)]};--dur:${7+Math.random()*10}s;--delay2:${Math.random()*10}s;`;
+    document.body.appendChild(p);
+  }
+  const lw=document.getElementById('lanternWrap');
+  const lc=['linear-gradient(135deg,#FF6B6B,#C0392B)','linear-gradient(135deg,#A29BFE,#6C5CE7)','linear-gradient(135deg,#FD9644,#E67E22)','linear-gradient(135deg,#FF8ECA,#E91E8C)','linear-gradient(135deg,#FFEAA7,#F4C430)','linear-gradient(135deg,#74B9FF,#0984E3)','linear-gradient(135deg,#FF6B6B,#C0392B)','linear-gradient(135deg,#55EFC4,#00B894)','linear-gradient(135deg,#FD9644,#E67E22)','linear-gradient(135deg,#A29BFE,#6C5CE7)'];
+  for(let i=0;i<10;i++){
+    const l=document.createElement('div');l.className='lantern';
+    l.style.cssText=`background:${lc[i]};--sw:${2.5+Math.random()*2}s;--sd:${Math.random()*2}s;`;
+    lw.appendChild(l);
+  }
+})();
+
+// ===== STATE =====
+const G={gameName:'فعاليات اللاري',items:[],envelopeCount:9,prizes:[],players:[],envelopes:[],currentPlayerIdx:-1,currentEnvIdx:-1,scores:{},rouletteSpinning:false,prizeSpinning:false,rouletteAngle:0,prizeAngle:0};
+
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function updateGameNamePreview(){const v=document.getElementById('gameNameInput').value||'فعاليات اللاري';document.getElementById('gameNamePreview').textContent=v;G.gameName=v;}
+function setGameName(n){document.getElementById('gameNameInput').value=n;updateGameNamePreview();}
+
+function switchTab(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById(`tab${i}`).classList.toggle('hidden',i!==n);
+    document.getElementById(`tab${i}btn`).classList.toggle('active',i===n);
+    const d=document.getElementById(`sd${i}`);d.classList.toggle('active',i===n);d.classList.toggle('done',i<n);
+  });
+  if(n===3)updateSummary();
+}
+
+function addItem(t){const inp=document.getElementById(t==='q'?'qInput':'cInput');const txt=inp.value.trim();if(!txt)return;G.items.push({type:t,text:txt});inp.value='';renderItems();}
+function removeItem(i){G.items.splice(i,1);renderItems();}
+function renderItems(){
+  document.getElementById('itemCount').textContent=G.items.length;
+  document.getElementById('itemList').innerHTML=G.items.map((item,i)=>`<div class="tag ${item.type==='q'?'question':'challenge'}"><span>${item.type==='q'?'❓':'🎯'}</span><span class="txt">${item.text}</span><button class="remove" onclick="removeItem(${i})">✕</button></div>`).join('');
+}
+function clearItems(){G.items=[];renderItems();}
+const DEF_ITEMS=[
+  {type:'q',text:'ما هو الشهر الكريم الذي يصوم فيه المسلمون؟'},
+  {type:'q',text:'كم عدد ركعات صلاة العيد؟'},
+  {type:'q',text:'ما معنى كلمة "فطر" في عيد الفطر؟'},
+  {type:'q',text:'ما هي الأطعمة المشهورة في العيد عندكم؟'},
+  {type:'q',text:'في أي وقت تُصلى صلاة العيد؟'},
+  {type:'q',text:'ما اسم السورة التي تُقرأ في صلاة العيد؟'},
+  {type:'q',text:'ماذا نقول عند التهنئة بالعيد؟'},
+  {type:'q',text:'ما هي زكاة الفطر وما مقدارها؟'},
+  {type:'c',text:'قل 5 أسماء أكلات العيد في 10 ثوانٍ!'},
+  {type:'c',text:'قلّد شخصاً يستلم عيدية صغيرة ويتظاهر أنها كبيرة!'},
+  {type:'c',text:'اذكر 5 أفراد من عائلتك وصف كل واحد بكلمة واحدة!'},
+  {type:'c',text:'غنّ أي أغنية للعيد بصوت عالٍ لـ5 ثوانٍ!'},
+  {type:'c',text:'قلّد أحد أفراد العائلة والبقية تخمّنوا!'},
+  {type:'c',text:'احكِ ذكرى مضحكة من أحد أعياد الماضي!'},
+];
+function loadDefaults(){G.items=[...DEF_ITEMS];renderItems();}
+
+let envCount=9;
+function changeEnvCount(d){envCount=Math.max(3,Math.min(30,envCount+d));envCount=Math.round(envCount/3)*3;if(envCount<3)envCount=3;if(envCount>30)envCount=30;document.getElementById('envCountDisplay').textContent=envCount;}
+
+function addPrizeField(v=''){const div=document.createElement('div');div.className='prize-item';div.innerHTML=`<input type="text" placeholder="أدخل جائزة" class="prize-field" value="${v}"><button class="btn btn-red btn-sm" onclick="this.parentElement.remove()">✕</button>`;document.getElementById('prizeInputs').appendChild(div);}
+const DEF_PRIZES=['شوكولاتة 🍫','كرت شحن 💳','عيدية خاصة 💰','لعبة صغيرة 🎮','حلوى العيد 🍬','جائزة مفاجأة 🎁','نقطة ذهبية ⭐','تحدي إضافي 🎯'];
+function loadDefaultPrizes(){document.getElementById('prizeInputs').innerHTML='';DEF_PRIZES.forEach(p=>addPrizeField(p));}
+
+function addPlayer(){const inp=document.getElementById('playerInput');const name=inp.value.trim();if(!name)return;if(G.players.find(p=>p.name===name)){inp.value='';return;}G.players.push({name,num:0,score:0});inp.value='';renderPlayers();}
+function removePlayer(i){G.players.splice(i,1);renderPlayers();}
+function renderPlayers(){document.getElementById('playersList').innerHTML=G.players.map((p,i)=>`<div class="player-badge"><div class="player-num">${i+1}</div><span style="flex:1;font-weight:600;">${p.name}</span><button onclick="removePlayer(${i})" style="background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:1rem;">✕</button></div>`).join('');}
+function addDefaultPlayers(){['سارة','أحمد','محمد','نورة','خالد','فاطمة'].forEach(n=>{if(!G.players.find(p=>p.name===n))G.players.push({name:n,num:0,score:0});});renderPlayers();}
+function updateSummary(){
+  const prizes=Array.from(document.querySelectorAll('.prize-field')).map(i=>i.value.trim()).filter(Boolean);
+  document.getElementById('summaryGrid').innerHTML=`<div class="sum-item"><div class="sum-val" style="color:${G.items.length>0?'var(--gold)':'#FF8A8A'}">${G.items.length}</div><div class="sum-label">أسئلة وتحديات</div></div><div class="sum-item"><div class="sum-val" style="color:${G.players.length>=2?'var(--gold)':'#FF8A8A'}">${G.players.length}</div><div class="sum-label">لاعبون</div></div><div class="sum-item"><div class="sum-val">${envCount}</div><div class="sum-label">ظرف</div></div><div class="sum-item"><div class="sum-val">${prizes.length}</div><div class="sum-label">جائزة</div></div>`;
+}
+
+function startGame(){
+  if(G.players.length<2){alert('يرجى إضافة لاعبين (الحد الأدنى 2)');return;}
+  if(G.items.length===0)loadDefaults();
+  let prizes=Array.from(document.querySelectorAll('.prize-field')).map(i=>i.value.trim()).filter(Boolean);
+  if(prizes.length===0){loadDefaultPrizes();prizes=DEF_PRIZES.slice();}
+  G.prizes=prizes;
+  G.gameName=document.getElementById('gameNameInput').value||'فعاليات اللاري';
+  document.getElementById('gameHeaderTitle').textContent=G.gameName+' 🎊';
+  document.getElementById('welcomeTitle').textContent=G.gameName;
+  G.envelopeCount=envCount;
+  const nums=shuffle([...Array(G.players.length).keys()].map(i=>i+1));
+  G.players.forEach((p,i)=>{p.num=nums[i];p.score=0;});
+  G.scores={};G.players.forEach(p=>G.scores[p.name]=0);
+  buildEnvelopes();goTo('screenGame');updateGameInfo();initRoulette();setPhase('roulette');
+}
+
+function buildEnvelopes(){
+  const pool=[...G.items];
+  while(pool.length<G.envelopeCount)pool.push(...G.items);
+  shuffle(pool);
+  const colors=['ec1','ec2','ec3','ec4','ec5','ec6','ec7','ec8','ec9'];
+  G.envelopes=[];
+  for(let i=0;i<G.envelopeCount;i++)G.envelopes.push({...pool[i%pool.length],opened:false,color:colors[i%colors.length]});
+}
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+
+function setPhase(ph){
+  G.phase=ph;
+  document.getElementById('phaseRoulette').classList.toggle('hidden',ph!=='roulette');
+  document.getElementById('phaseEnvelopes').classList.toggle('hidden',ph!=='envelopes');
+  document.getElementById('phasePrize').classList.toggle('hidden',ph!=='prize');
+  window.scrollTo(0,0);
+}
+
+function updateGameInfo(){
+  const opened=G.envelopes.filter(e=>e.opened).length;
+  document.getElementById('envsLeft').textContent=G.envelopeCount-opened;
+  document.getElementById('playersCount').textContent=G.players.length;
+  document.getElementById('gameProgress').style.width=((opened/G.envelopeCount)*100)+'%';
+}
+
+// ===== ROULETTE =====
+function initRoulette(){
+  drawRoulette(G.rouletteAngle);
+  document.getElementById('spinResult').classList.add('hidden');
+  document.getElementById('rouletteBtn').innerHTML='<button class="btn btn-gold btn-xl" onclick="spinRoulette()">🎡 دوّر الروليت!</button>';
+}
+
+function drawRoulette(angle){
+  const cv=document.getElementById('roulette-canvas');const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,r=W/2-12;
+  ctx.clearRect(0,0,W,H);
+  const n=G.players.length;const sa=(2*Math.PI)/n;
+  const cols=['#FF6B6B','#A29BFE','#FD9644','#FF8ECA','#FFEAA7','#74B9FF','#FF7B7B','#55EFC4','#FD9644','#C39BD3','#FF6348','#00CEC9'];
+  for(let i=0;i<n;i++){
+    const s=angle+i*sa-Math.PI/2,e=s+sa;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
+    const grd=ctx.createRadialGradient(cx,cy,r*0.25,cx,cy,r);
+    grd.addColorStop(0,lighten(cols[i%cols.length],28));grd.addColorStop(1,cols[i%cols.length]);
+    ctx.fillStyle=grd;ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,0.22)';ctx.lineWidth=2;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+sa/2);
+    ctx.textAlign='right';ctx.fillStyle='white';
+    ctx.font=`bold ${Math.max(10,17-Math.floor(n/2))}px Tajawal`;
+    ctx.shadowColor='rgba(0,0,0,0.7)';ctx.shadowBlur=5;
+    ctx.fillText(`${G.players[i].name} (${G.players[i].num})`,r-12,5);
+    ctx.restore();
+  }
+  ctx.beginPath();ctx.arc(cx,cy,r,0,2*Math.PI);ctx.strokeStyle='rgba(244,196,48,0.7)';ctx.lineWidth=4;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,26,0,2*Math.PI);
+  const cg=ctx.createRadialGradient(cx-5,cy-5,2,cx,cy,26);cg.addColorStop(0,'#3D1A6E');cg.addColorStop(1,'#1A0A2E');
+  ctx.fillStyle=cg;ctx.fill();ctx.strokeStyle='rgba(244,196,48,0.9)';ctx.lineWidth=3;ctx.stroke();
+  ctx.fillStyle='#F4C430';ctx.font='15px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🎡',cx,cy);
+  ctx.save();ctx.translate(cx,cy-r+5);ctx.beginPath();ctx.moveTo(-11,0);ctx.lineTo(11,0);ctx.lineTo(0,28);ctx.closePath();ctx.fillStyle='#F4C430';ctx.fill();ctx.strokeStyle='rgba(0,0,0,0.45)';ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
+}
+
+function lighten(hex,pct){
+  const n=parseInt(hex.replace('#',''),16);
+  const r=Math.min(255,((n>>16)&0xff)+pct),g=Math.min(255,((n>>8)&0xff)+pct),b=Math.min(255,(n&0xff)+pct);
+  return`rgb(${r},${g},${b})`;
+}
+
+function spinRoulette(){
+  if(G.rouletteSpinning)return;
+  const opened=G.envelopes.filter(e=>e.opened).length;
+  if(opened>=G.envelopeCount){endGame();return;}
+  G.rouletteSpinning=true;
+  document.getElementById('spinResult').classList.add('hidden');
+  document.getElementById('rouletteBtn').innerHTML='<div style="font-size:0.95rem;color:rgba(255,255,255,0.35);text-align:center;padding:10px;">جاري الدوران...</div>';
+  const extra=(5+Math.floor(Math.random()*6))*2*Math.PI;
+  const target=G.rouletteAngle+extra+Math.random()*2*Math.PI;
+  const dur=3500;const t0=performance.now();const a0=G.rouletteAngle;
+  function anim(now){
+    const el=now-t0;const t=Math.min(el/dur,1);
+    const ease=1-Math.pow(1-t,3);G.rouletteAngle=a0+(target-a0)*ease;drawRoulette(G.rouletteAngle);
+    if(t<1){requestAnimationFrame(anim);return;}
+    G.rouletteSpinning=false;
+    const n=G.players.length;const sa=(2*Math.PI)/n;
+    const na=((G.rouletteAngle%(2*Math.PI))+(2*Math.PI))%(2*Math.PI);
+    const idx=Math.floor(((2*Math.PI-na)%(2*Math.PI))/sa)%n;
+    G.currentPlayerIdx=idx;const player=G.players[idx];
+    const res=document.getElementById('spinResult');
+    res.textContent=`🎉 ${player.name} — رقم ${player.num}`;res.classList.remove('hidden');
+    document.getElementById('rouletteBtn').innerHTML=`<button class="btn btn-pink btn-xl" onclick="goToEnvelopes()">اختر ظرفك يا ${player.name}! ✉️</button>`;
+  }
+  requestAnimationFrame(anim);
+}
+
+function goToEnvelopes(){
+  const p=G.players[G.currentPlayerIdx];
+  document.getElementById('activePlayerName').textContent=p.name;
+  document.getElementById('activePlayerNum').textContent=`رقم ${p.num}`;
+  renderEnvelopes();setPhase('envelopes');
+}
+
+// ===== ENVELOPES =====
+const ENV_ICONS=['🎀','🌟','🎊','💫','🎈','✨','🎁','🌙','🎉','💎','🌸','⭐'];
+function renderEnvelopes(){
+  document.getElementById('envelopesGrid').innerHTML=G.envelopes.map((env,i)=>{
+    const icon=env.opened?(env.type==='q'?'❓':'🎯'):ENV_ICONS[i%ENV_ICONS.length];
+    const label=env.opened?(env.type==='q'?'سؤال':'تحدي'):'اضغط!';
+    const click=env.opened?'':'openEnvelope('+i+')';
+    return`<div class="envelope ${env.color} ${env.opened?'opened':''}" onclick="${click}" style="animation-delay:${i*0.055}s"><div class="env-big-icon">${icon}</div><div class="env-label">${label}</div><div class="env-num-bg">${i+1}</div></div>`;
+  }).join('');
+}
+
+function openEnvelope(i){
+  const env=G.envelopes[i];if(env.opened)return;G.currentEnvIdx=i;
+  document.getElementById('modalIcon').textContent=env.type==='q'?'❓':'🎯';
+  document.getElementById('modalTitle').textContent=env.type==='q'?'❓ سؤال':'🎯 تحدي';
+  document.getElementById('modalBadge').textContent=env.type==='q'?'سؤال':'تحدي';
+  document.getElementById('modalBadge').className='modal-type-badge '+(env.type==='q'?'badge-q':'badge-c');
+  document.getElementById('modalBody').textContent=env.text;
+  document.getElementById('cardModal').classList.add('open');
+}
+
+// ===== ANSWER — wrong = END TURN, no re-pick =====
+function handleAnswer(correct){
+  document.getElementById('cardModal').classList.remove('open');
+  G.envelopes[G.currentEnvIdx].opened=true;
+  updateGameInfo();
+  const player=G.players[G.currentPlayerIdx];
+  const opened=G.envelopes.filter(e=>e.opened).length;
+  if(correct){
+    G.scores[player.name]=(G.scores[player.name]||0)+1;
+    document.getElementById('prizePlayerName').textContent=player.name;
+    document.getElementById('prizeResultBox').classList.add('hidden');
+    document.getElementById('prizeBtn').innerHTML='<button class="btn btn-gold btn-xl" onclick="spinPrizeWheel()">🎁 دوّر دوامة الجوائز!</button>';
+    G.prizeSpinning=false;drawPrizeWheel(G.prizeAngle);setPhase('prize');
+  } else {
+    // Wrong answer → end turn → roulette again
+    if(opened>=G.envelopeCount){endGame();}
+    else{showWrongAndRoulette(player.name);}
+  }
+}
+
+function showWrongAndRoulette(name){
+  setPhase('roulette');
+  const old=document.getElementById('wrongBanner');if(old)old.remove();
+  const b=document.createElement('div');b.id='wrongBanner';b.className='wrong-turn-banner';
+  b.innerHTML=`<span class="wtb-icon">❌</span><div class="wtb-title">انتهى دور ${name}!</div><div class="wtb-sub">أجاب خطأ — سيعود عند دوران الروليت مجدداً</div>`;
+  document.getElementById('phaseRoulette').insertBefore(b,document.getElementById('phaseRoulette').firstChild);
+  document.getElementById('spinResult').classList.add('hidden');
+  document.getElementById('rouletteBtn').innerHTML='<button class="btn btn-gold btn-xl" onclick="spinRoulette()">🎡 دوّر الروليت!</button>';
+}
+
+// ===== PRIZE WHEEL =====
+function drawPrizeWheel(angle){
+  const cv=document.getElementById('prize-canvas');const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,r=W/2-12;
+  ctx.clearRect(0,0,W,H);
+  const prizes=G.prizes;const n=prizes.length;const sa=(2*Math.PI)/n;
+  const cols=['#FF6B6B','#F4C430','#A29BFE','#74B9FF','#FF8ECA','#FD9644','#55EFC4','#C39BD3','#FF4757','#4ECDC4'];
+  for(let i=0;i<n;i++){
+    const s=angle+i*sa-Math.PI/2,e=s+sa;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
+    const grd=ctx.createRadialGradient(cx,cy,r*0.25,cx,cy,r);
+    grd.addColorStop(0,lighten(cols[i%cols.length],22));grd.addColorStop(1,cols[i%cols.length]);
+    ctx.fillStyle=grd;ctx.fill();ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=2;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+sa/2);ctx.textAlign='right';ctx.fillStyle='white';
+    ctx.font=`bold ${Math.max(10,15-Math.floor(n/4))}px Tajawal`;ctx.shadowColor='rgba(0,0,0,0.7)';ctx.shadowBlur=5;
+    ctx.fillText(prizes[i].length>13?prizes[i].substring(0,12)+'…':prizes[i],r-10,5);ctx.restore();
+  }
+  ctx.beginPath();ctx.arc(cx,cy,r,0,2*Math.PI);ctx.strokeStyle='rgba(255,107,157,0.8)';ctx.lineWidth=5;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,28,0,2*Math.PI);
+  const cg=ctx.createRadialGradient(cx-6,cy-6,2,cx,cy,28);cg.addColorStop(0,'#3D1A6E');cg.addColorStop(1,'#1A0A2E');
+  ctx.fillStyle=cg;ctx.fill();ctx.strokeStyle='rgba(255,107,157,0.9)';ctx.lineWidth=3;ctx.stroke();
+  ctx.fillStyle='#FFD700';ctx.font='17px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🎁',cx,cy);
+  ctx.save();ctx.translate(cx,cy-r+5);ctx.beginPath();ctx.moveTo(-12,0);ctx.lineTo(12,0);ctx.lineTo(0,30);ctx.closePath();ctx.fillStyle='#FF6B9D';ctx.fill();ctx.strokeStyle='rgba(0,0,0,0.35)';ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
+}
+
+function spinPrizeWheel(){
+  if(G.prizeSpinning)return;G.prizeSpinning=true;
+  document.getElementById('prizeResultBox').classList.add('hidden');
+  document.getElementById('prizeBtn').innerHTML='<div style="font-size:0.95rem;color:rgba(255,255,255,0.35);text-align:center;padding:10px;">جاري الدوران...</div>';
+  const extra=(6+Math.floor(Math.random()*6))*2*Math.PI;
+  const target=G.prizeAngle+extra+Math.random()*2*Math.PI;
+  const dur=4000;const t0=performance.now();const a0=G.prizeAngle;
+  function anim(now){
+    const el=now-t0;const t=Math.min(el/dur,1);
+    const ease=1-Math.pow(1-t,4);G.prizeAngle=a0+(target-a0)*ease;drawPrizeWheel(G.prizeAngle);
+    if(t<1){requestAnimationFrame(anim);return;}
+    G.prizeSpinning=false;
+    const n=G.prizes.length;const sa=(2*Math.PI)/n;
+    const na=((G.prizeAngle%(2*Math.PI))+(2*Math.PI))%(2*Math.PI);
+    const idx=Math.floor(((2*Math.PI-na)%(2*Math.PI))/sa)%n;
+    const prize=G.prizes[idx];
+    document.getElementById('prizeResultText').textContent=prize;
+    document.getElementById('prizeResultBox').classList.remove('hidden');
+    confetti();
+    const opened=G.envelopes.filter(e=>e.opened).length;
+    if(opened>=G.envelopeCount){document.getElementById('prizeBtn').innerHTML='<button class="btn btn-gold btn-xl" onclick="endGame()">🏆 عرض النتائج</button>';}
+    else{document.getElementById('prizeBtn').innerHTML='<button class="btn btn-pink btn-xl" onclick="nextTurn()">التالي ← 🎡</button>';}
+  }
+  requestAnimationFrame(anim);
+}
+
+function nextTurn(){const b=document.getElementById('wrongBanner');if(b)b.remove();setPhase('roulette');initRoulette();}
+
+function endGame(){
+  const sorted=Object.entries(G.scores).sort((a,b)=>b[1]-a[1]);
+  const medals=['🥇','🥈','🥉'];
+  document.getElementById('finalScores').innerHTML=sorted.map(([name,sc],i)=>`<div class="score-row"><div class="score-rank">${medals[i]||`${i+1}`}</div><div class="score-name">${name}</div><div class="score-pts">${sc} نقطة</div></div>`).join('')||'<p style="text-align:center;color:rgba(255,255,255,0.35);padding:20px;">لم يُسجل أحد نقاط</p>';
+  confetti();confetti();confetti();setTimeout(()=>goTo('screenResults'),1200);
+}
+function restartGame(){goTo('screenSetup');switchTab(1);}
+
+function confetti(){
+  const cols=['#F4C430','#FF6B9D','#A29BFE','#74BCFF','#55EFC4','#FD9644','#FF4757'];
+  for(let i=0;i<70;i++){
+    const el=document.createElement('div');el.className='confetti-piece';const sz=5+Math.random()*9;
+    el.style.cssText=`left:${Math.random()*100}vw;background:${cols[Math.floor(Math.random()*cols.length)]};width:${sz}px;height:${sz}px;animation-duration:${2+Math.random()*2.5}s;animation-delay:${Math.random()*0.6}s;border-radius:${Math.random()>0.5?'50%':'3px'};`;
+    document.body.appendChild(el);setTimeout(()=>el.remove(),4500);
+  }
+}
+
+// INIT
+loadDefaults();loadDefaultPrizes();renderItems();renderPlayers();
+</script>
+</body>
+</html>
