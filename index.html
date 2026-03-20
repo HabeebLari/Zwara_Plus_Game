@@ -8,9 +8,9 @@
 <style>
 :root{
   --gold:#F4C430;--gold2:#FFE08A;--gold3:#D4A500;
-  --cream:#FFF8E7;--bg:#1A0A2E;--bg2:#120720;--bg3:#2D1155;
-  --accent:#FF6B9D;--accent2:#FF4081;--cyan:#00D4FF;
-  --purple:#9B59B6;--red:#FF4757;--orange:#FF6348;
+  --cream:#FFF8E7;--bg:#1A0A2E;--bg2:#120720;
+  --accent:#FF6B9D;--cyan:#00D4FF;
+  --purple:#9B59B6;--red:#FF4757;
   --card:rgba(255,255,255,0.05);--radius:20px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -40,16 +40,18 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .card-gold{border-color:rgba(244,196,48,0.2);background:rgba(244,196,48,0.03);}
 .card-purple{border-color:rgba(155,89,182,0.25);background:rgba(155,89,182,0.05);}
 .section-title{font-size:1.15rem;font-weight:800;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.btn{padding:12px 26px;border-radius:50px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:700;transition:all 0.22s;display:inline-flex;align-items:center;gap:8px;position:relative;}
+.btn{padding:12px 26px;border-radius:50px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:700;transition:all 0.22s;display:inline-flex;align-items:center;gap:8px;}
 .btn:hover{transform:translateY(-2px);filter:brightness(1.08);}
 .btn:active{transform:translateY(0);}
 .btn-gold{background:linear-gradient(135deg,#FFD700,#F4A800);color:#1A0A2E;box-shadow:0 4px 22px rgba(244,196,48,0.45);}
 .btn-pink{background:linear-gradient(135deg,#FF6B9D,#FF4081);color:white;box-shadow:0 4px 22px rgba(255,107,157,0.45);}
 .btn-cyan{background:linear-gradient(135deg,#00D4FF,#0094FF);color:#0A0320;box-shadow:0 4px 20px rgba(0,212,255,0.35);}
 .btn-red{background:linear-gradient(135deg,#FF4757,#C0392B);color:white;box-shadow:0 4px 18px rgba(255,71,87,0.35);}
+.btn-green{background:linear-gradient(135deg,#00E676,#00B248);color:#0A2E00;box-shadow:0 4px 18px rgba(0,230,118,0.35);}
 .btn-ghost{background:transparent;border:2px solid rgba(244,196,48,0.35);color:var(--gold2);}
 .btn-ghost:hover{background:rgba(244,196,48,0.08);}
 .btn-ghost-pink{background:transparent;border:2px solid rgba(255,107,157,0.4);color:#FF6B9D;}
+.btn-ghost-cyan{background:transparent;border:2px solid rgba(0,212,255,0.4);color:var(--cyan);}
 .btn-sm{padding:8px 16px;font-size:0.87rem;}
 .btn-lg{padding:15px 40px;font-size:1.15rem;}
 .btn-xl{padding:18px 50px;font-size:1.25rem;}
@@ -83,7 +85,6 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
 .step-dot.active{background:var(--gold);transform:scale(1.4);box-shadow:0 0 8px rgba(244,196,48,0.6);}
 .step-dot.done{background:var(--accent);}
 .alert{padding:10px 15px;border-radius:11px;margin:7px 0;font-weight:600;font-size:0.88rem;display:flex;align-items:center;gap:8px;}
-.alert-warn{background:rgba(255,99,72,0.1);border:1px solid rgba(255,99,72,0.28);color:#FF8A75;}
 .alert-info{background:rgba(0,148,255,0.08);border:1px solid rgba(0,148,255,0.22);color:#74BCFF;}
 .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(244,196,48,0.18),transparent);margin:18px 0;}
 .game-header{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;background:rgba(0,0,0,0.45);border-bottom:1px solid rgba(255,255,255,0.05);position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);gap:8px;flex-wrap:wrap;}
@@ -98,37 +99,48 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
 .phase-sub{font-size:0.88rem;color:rgba(255,255,255,0.42);margin-top:5px;}
 .phase-num-badge{display:inline-block;background:linear-gradient(135deg,rgba(244,196,48,0.18),rgba(255,107,157,0.12));border:1px solid rgba(244,196,48,0.28);border-radius:30px;padding:4px 16px;font-size:0.9rem;font-weight:700;color:var(--gold2);margin-top:8px;}
 
-/* ====== ENVELOPES BIG & BEAUTIFUL ====== */
-.envelopes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:18px;padding:6px;}
-.envelope{
-  aspect-ratio:3/4.2;border-radius:24px;cursor:pointer;position:relative;
-  transition:transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275),box-shadow 0.3s;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;
-  animation:envAppear 0.5s cubic-bezier(0.175,0.885,0.32,1.275) backwards;
-  overflow:hidden;
-}
-/* Sheen overlay */
-.envelope::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,0.22) 0%,transparent 45%,rgba(0,0,0,0.12) 100%);pointer-events:none;border-radius:24px;}
-/* Bottom flap shadow */
-.envelope::after{content:'';position:absolute;bottom:0;left:0;right:0;height:32%;background:rgba(0,0,0,0.18);clip-path:polygon(0 50%,50% 0,100% 50%,100% 100%,0 100%);pointer-events:none;}
-@keyframes envAppear{from{opacity:0;transform:scale(0.55) rotate(-10deg);}to{opacity:1;transform:scale(1) rotate(0);}}
-.envelope:hover:not(.opened){transform:translateY(-12px) scale(1.07) rotate(1deg);box-shadow:0 24px 60px rgba(0,0,0,0.55),0 0 0 2.5px rgba(244,196,48,0.65),0 0 40px rgba(244,196,48,0.25);z-index:10;}
-.envelope.opened{opacity:0.25;cursor:default;filter:grayscale(0.9) brightness(0.55);transform:scale(0.92);}
-.env-num-bg{position:absolute;bottom:12px;right:12px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.38);border:2px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:900;color:white;z-index:3;}
-.env-big-icon{font-size:3.5rem;filter:drop-shadow(0 5px 10px rgba(0,0,0,0.45));z-index:2;position:relative;transition:transform 0.3s;}
-.envelope:hover:not(.opened) .env-big-icon{transform:scale(1.2) rotate(8deg);}
-.env-label{font-size:1rem;font-weight:800;color:white;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,0.7);z-index:2;position:relative;padding:0 8px;line-height:1.2;}
-/* Colors */
-.ec1{background:linear-gradient(160deg,#FF7B7B,#C0392B,#6B0000);}
-.ec2{background:linear-gradient(160deg,#5EE7E0,#1A8C87,#0A4848);}
-.ec3{background:linear-gradient(160deg,#B8A9FF,#7C6EE0,#3A2090);}
-.ec4{background:linear-gradient(160deg,#FFB347,#E67E22,#8C3D00);}
-.ec5{background:linear-gradient(160deg,#FF9ED6,#E91E8C,#6B0040);}
-.ec6{background:linear-gradient(160deg,#FFF176,#F4C430,#8C6000);}
-.ec7{background:linear-gradient(160deg,#90CAF9,#1565C0,#0A2A6E);}
-.ec8{background:linear-gradient(160deg,#80EAC4,#00897B,#004D40);}
-.ec9{background:linear-gradient(160deg,#FF8A80,#E53935,#7F0000);}
+/* ====== REAL ENVELOPE CARDS ====== */
+.envelopes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:20px;padding:6px;}
 
+.envelope{
+  aspect-ratio:4/3;
+  cursor:pointer;position:relative;
+  animation:envAppear 0.55s cubic-bezier(0.175,0.885,0.32,1.275) backwards;
+  transition:transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275),filter 0.3s;
+  filter:drop-shadow(0 6px 20px rgba(0,0,0,0.5));
+}
+.envelope:hover:not(.opened){
+  transform:translateY(-10px) scale(1.06);
+  filter:drop-shadow(0 16px 40px rgba(0,0,0,0.6)) drop-shadow(0 0 18px rgba(244,196,48,0.5));
+  z-index:10;
+}
+.envelope.opened{opacity:0.28;cursor:default;filter:grayscale(0.9) brightness(0.5) drop-shadow(0 2px 6px rgba(0,0,0,0.4));transform:scale(0.9);}
+@keyframes envAppear{from{opacity:0;transform:scale(0.5) rotate(-12deg);}to{opacity:1;transform:scale(1) rotate(0);}}
+
+/* SVG envelope gets pointer-events passed through */
+.envelope svg{width:100%;height:100%;display:block;}
+
+/* Flap open animation */
+.envelope:not(.opened) .env-flap{
+  transform-origin:top center;
+  transition:transform 0.3s ease;
+}
+.envelope:hover:not(.opened) .env-flap{
+  transform:rotateX(-30deg);
+}
+
+/* Number badge on envelope */
+.env-num-badge{
+  position:absolute;bottom:14%;right:8%;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(0,0,0,0.5);border:2px solid rgba(255,255,255,0.5);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.9rem;font-weight:900;color:white;
+  pointer-events:none;z-index:5;
+  text-shadow:0 1px 4px rgba(0,0,0,0.8);
+}
+
+/* ====== ROULETTE & PRIZE WHEEL ====== */
 .roulette-wrap{text-align:center;background:linear-gradient(135deg,rgba(155,89,182,0.09),rgba(0,212,255,0.04));border:1px solid rgba(155,89,182,0.2);border-radius:24px;padding:30px 16px;}
 #roulette-canvas{display:block;margin:0 auto;max-width:340px;width:90%;cursor:pointer;filter:drop-shadow(0 0 35px rgba(155,89,182,0.45));transition:filter 0.3s;}
 #roulette-canvas:hover{filter:drop-shadow(0 0 55px rgba(244,196,48,0.55));}
@@ -136,23 +148,139 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
 #prize-canvas{display:block;margin:0 auto;max-width:350px;width:90%;cursor:pointer;filter:drop-shadow(0 0 35px rgba(255,107,157,0.45));}
 .spin-result{font-size:1.7rem;font-weight:900;color:var(--gold);text-align:center;margin:18px 0;animation:popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);text-shadow:0 0 18px rgba(244,196,48,0.55);}
 @keyframes popIn{0%{transform:scale(0.3) rotate(-10deg);opacity:0;}70%{transform:scale(1.12) rotate(2deg);}100%{transform:scale(1) rotate(0);opacity:1;}}
-.prize-result-box{background:linear-gradient(135deg,rgba(255,107,157,0.14),rgba(244,196,48,0.08));border:2px solid rgba(255,107,157,0.38);border-radius:18px;padding:18px;margin:14px 0;animation:popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);}
-.prize-result-label{font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:5px;}
-.prize-result-text{font-size:2rem;font-weight:900;color:var(--gold);}
+
+/* ====== PRIZE CELEBRATION OVERLAY ====== */
+.prize-celebrate-overlay{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,0.92);
+  align-items:center;justify-content:center;
+  backdrop-filter:blur(10px);
+  animation:fadeIn 0.4s ease;
+}
+.prize-celebrate-overlay.open{display:flex;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.prize-celebrate-box{
+  text-align:center;
+  animation:celebrateIn 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
+  max-width:90vw;
+}
+@keyframes celebrateIn{
+  from{transform:scale(0.3) rotate(-15deg);opacity:0;}
+  60%{transform:scale(1.15) rotate(3deg);}
+  to{transform:scale(1) rotate(0);opacity:1;}
+}
+.prize-celebrate-emoji{font-size:clamp(4rem,12vw,8rem);display:block;animation:bounce 0.8s ease-in-out infinite;line-height:1;}
+@keyframes bounce{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-20px) scale(1.1);}}
+.prize-celebrate-label{
+  font-size:clamp(1rem,3vw,1.4rem);color:rgba(255,255,255,0.55);
+  margin:16px 0 8px;letter-spacing:3px;
+}
+.prize-celebrate-name{
+  font-size:clamp(2.5rem,8vw,6rem);font-weight:900;
+  background:linear-gradient(135deg,#FFE08A,#F4C430,#FF6B9D);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 30px rgba(244,196,48,0.7));
+  line-height:1.1;margin-bottom:24px;
+}
+.prize-celebrate-btn{margin-top:8px;}
+
+/* ====== CARD MODAL (Question/Challenge) ====== */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:200;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(8px);}
 .modal-overlay.open{display:flex;}
-.modal{background:linear-gradient(160deg,#210738 0%,#2D1155 100%);border:1px solid rgba(255,107,157,0.28);border-radius:26px;padding:34px 26px;max-width:520px;width:100%;text-align:center;animation:modalIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);box-shadow:0 20px 80px rgba(0,0,0,0.8);}
+.modal{background:linear-gradient(160deg,#210738 0%,#2D1155 100%);border:1px solid rgba(255,107,157,0.28);border-radius:26px;padding:28px 24px;max-width:560px;width:100%;text-align:center;animation:modalIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);box-shadow:0 20px 80px rgba(0,0,0,0.8);max-height:90vh;overflow-y:auto;}
 @keyframes modalIn{from{transform:scale(0.6) translateY(40px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
-.modal-icon{font-size:3.5rem;margin-bottom:8px;display:block;animation:bounce 1.5s ease-in-out infinite;}
-@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-.modal-type-badge{display:inline-block;padding:5px 16px;border-radius:20px;font-size:0.83rem;font-weight:700;margin-bottom:14px;letter-spacing:1px;}
+.modal-icon{font-size:3rem;margin-bottom:8px;display:block;animation:bounce 1.5s ease-in-out infinite;}
+.modal-type-badge{display:inline-block;padding:5px 16px;border-radius:20px;font-size:0.83rem;font-weight:700;margin-bottom:12px;letter-spacing:1px;}
 .badge-q{background:rgba(0,148,255,0.18);border:1px solid rgba(0,148,255,0.38);color:#74BCFF;}
 .badge-c{background:rgba(155,89,182,0.18);border:1px solid rgba(155,89,182,0.45);color:#C39BD3;}
-.modal-title{font-size:1.3rem;font-weight:900;color:var(--gold);margin-bottom:5px;}
-.modal-body{font-size:1.35rem;font-weight:700;line-height:1.6;color:var(--cream);margin:14px 0 26px;padding:20px;background:rgba(255,255,255,0.05);border-radius:14px;border:1px solid rgba(255,255,255,0.07);min-height:80px;display:flex;align-items:center;justify-content:center;}
-.modal-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.modal-title{font-size:1.2rem;font-weight:900;color:var(--gold);margin-bottom:4px;}
+
+/* Media display in modal */
+.modal-media{margin:10px 0;border-radius:14px;overflow:hidden;max-height:260px;}
+.modal-media img{width:100%;max-height:260px;object-fit:contain;border-radius:14px;background:rgba(0,0,0,0.3);}
+.modal-media video{width:100%;max-height:260px;border-radius:14px;background:rgba(0,0,0,0.5);}
+
+.modal-question{font-size:1.25rem;font-weight:700;line-height:1.6;color:var(--cream);margin:12px 0;padding:18px;background:rgba(255,255,255,0.05);border-radius:14px;border:1px solid rgba(255,255,255,0.07);min-height:60px;display:flex;align-items:center;justify-content:center;}
+
+/* Multiple choice options */
+.mc-options{display:grid;gap:10px;margin:14px 0;text-align:right;}
+.mc-option{
+  background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);
+  border-radius:14px;padding:12px 16px;cursor:pointer;
+  font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:600;
+  color:var(--cream);text-align:right;transition:all 0.2s;
+  display:flex;align-items:center;gap:10px;
+}
+.mc-option:hover{background:rgba(244,196,48,0.1);border-color:rgba(244,196,48,0.4);}
+.mc-option.selected-correct{background:rgba(0,230,118,0.15);border-color:#00E676;color:#00E676;}
+.mc-option.selected-wrong{background:rgba(255,71,87,0.15);border-color:#FF4757;color:#FF8A8A;}
+.mc-option.reveal-correct{background:rgba(0,230,118,0.1);border-color:rgba(0,230,118,0.5);color:#55ff99;}
+.mc-letter{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:900;flex-shrink:0;}
+
+/* Answer reveal */
+.answer-reveal{
+  background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.3);
+  border-radius:12px;padding:14px;margin:10px 0;
+  font-size:1rem;color:#55ff99;font-weight:700;text-align:right;
+  display:none;
+}
+.answer-reveal.show{display:block;animation:popIn 0.3s ease;}
+.answer-reveal-label{font-size:0.8rem;color:rgba(255,255,255,0.45);margin-bottom:4px;}
+
+.modal-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
+.btn-show-answer{background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.35);color:var(--cyan);font-family:'Tajawal',sans-serif;font-weight:700;font-size:0.9rem;padding:9px 18px;border-radius:30px;cursor:pointer;transition:all 0.2s;}
+.btn-show-answer:hover{background:rgba(0,212,255,0.2);}
+
+/* ====== ITEM BUILDER in Setup ====== */
+.item-builder{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;padding:18px;margin-bottom:14px;
+}
+.item-builder-header{font-size:1rem;font-weight:800;color:var(--gold2);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+
+/* Options builder */
+.options-list{display:grid;gap:8px;margin-bottom:10px;}
+.option-row{display:flex;gap:8px;align-items:center;}
+.option-row input{flex:1;}
+.option-correct-toggle{
+  width:34px;height:34px;border-radius:50%;border:2px solid rgba(0,230,118,0.3);
+  background:transparent;cursor:pointer;color:rgba(255,255,255,0.35);
+  font-size:1rem;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;flex-shrink:0;
+}
+.option-correct-toggle.correct{background:rgba(0,230,118,0.2);border-color:#00E676;color:#00E676;}
+
+/* Media upload */
+.media-upload-area{
+  border:2px dashed rgba(244,196,48,0.3);border-radius:14px;
+  padding:20px;text-align:center;cursor:pointer;
+  transition:all 0.2s;margin-bottom:10px;
+  background:rgba(255,255,255,0.02);
+}
+.media-upload-area:hover{border-color:rgba(244,196,48,0.6);background:rgba(244,196,48,0.04);}
+.media-upload-area input[type=file]{display:none;}
+.media-preview{margin-top:10px;border-radius:10px;overflow:hidden;max-height:160px;}
+.media-preview img,.media-preview video{width:100%;max-height:160px;object-fit:contain;border-radius:10px;}
+
+/* Tags list */
+.item-tag{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px;padding:10px 14px;
+  display:flex;align-items:flex-start;gap:10px;width:100%;
+  margin-bottom:8px;text-align:right;
+}
+.item-tag-type{
+  font-size:1.2rem;flex-shrink:0;margin-top:2px;
+}
+.item-tag-body{flex:1;min-width:0;}
+.item-tag-text{font-size:0.92rem;font-weight:600;color:var(--cream);line-height:1.4;overflow:hidden;text-overflow:ellipsis;}
+.item-tag-meta{font-size:0.75rem;color:rgba(255,255,255,0.4);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;}
+.item-tag .remove{background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:1.1rem;padding:0;flex-shrink:0;margin-top:2px;}
+.item-tag .remove:hover{color:var(--red);}
+
+/* Score board */
 .score-row{display:flex;align-items:center;gap:13px;padding:13px 16px;border-radius:13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);margin-bottom:9px;}
-.score-row:first-child{background:rgba(244,196,48,0.09);border-color:rgba(244,196,48,0.3);box-shadow:0 0 25px rgba(244,196,48,0.15);}
+.score-row:first-child{background:rgba(244,196,48,0.09);border-color:rgba(244,196,48,0.3);}
 .score-rank{font-size:1.5rem;min-width:42px;text-align:center;}
 .score-name{flex:1;font-weight:700;font-size:1.05rem;}
 .score-pts{background:linear-gradient(135deg,rgba(244,196,48,0.18),rgba(255,107,157,0.12));border:1px solid rgba(244,196,48,0.28);border-radius:30px;padding:4px 14px;font-size:1.05rem;font-weight:900;color:var(--gold);}
@@ -161,7 +289,7 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
 .wtb-title{font-size:1.2rem;font-weight:900;color:#FF8A8A;margin-bottom:3px;}
 .wtb-sub{font-size:0.87rem;color:rgba(255,255,255,0.4);}
 .prize-item{display:flex;gap:8px;margin-bottom:9px;}
-.confetti-piece{position:fixed;z-index:999;pointer-events:none;animation:confettiFall linear forwards;border-radius:2px;}
+.confetti-piece{position:fixed;z-index:998;pointer-events:none;animation:confettiFall linear forwards;}
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(105vh) rotate(900deg);opacity:0;}}
 .features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:13px;margin-top:22px;}
 .feature-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:15px;padding:18px;text-align:center;transition:all 0.2s;}
@@ -179,9 +307,8 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
 @media(max-width:500px){
   .form-row.cols2{grid-template-columns:1fr;}
   .modal-btns{flex-direction:column;}
-  .envelopes-grid{grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:12px;}
-  .env-big-icon{font-size:2.8rem;}
-  .env-label{font-size:0.88rem;}
+  .envelopes-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;}
+  .prize-celebrate-name{font-size:clamp(2rem,10vw,4rem);}
 }
 </style>
 </head>
@@ -194,7 +321,7 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
   <div class="brand-logo">
     <div class="logo-badge">🎊 لعبة العائلة</div>
     <span class="larry-moon">🌙</span>
-    <div class="game-title-display" id="welcomeTitle"> زواره بلس </div>
+    <div class="game-title-display" id="welcomeTitle">فعاليات اللاري</div>
     <div class="larry-sub">✦ عيد مبارك ✦</div>
   </div>
   <div class="container">
@@ -207,9 +334,9 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
     </div>
     <div class="features-grid">
       <div class="feature-card"><div class="feature-icon">✏️</div><div class="feature-title">سمّ لعبتك</div><div class="feature-desc">اختر اسماً يناسب تجمّعك</div></div>
-      <div class="feature-card"><div class="feature-icon">✉️</div><div class="feature-title">أظرف مميزة</div><div class="feature-desc">بمضاعفات الـ3 وتوزيع عشوائي</div></div>
-      <div class="feature-card"><div class="feature-icon">🎡</div><div class="feature-title">روليت اختيار</div><div class="feature-desc">تختار اللاعب بشكل عادل</div></div>
-      <div class="feature-card"><div class="feature-icon">🎁</div><div class="feature-title">دوامة الجوائز</div><div class="feature-desc">للفائزين بالأسئلة</div></div>
+      <div class="feature-card"><div class="feature-icon">✉️</div><div class="feature-title">أظرف حقيقية</div><div class="feature-desc">تصميم ظرف واقعي بألوان مميزة</div></div>
+      <div class="feature-card"><div class="feature-icon">🖼️</div><div class="feature-title">صور وفيديو</div><div class="feature-desc">أضف وسائط للأسئلة</div></div>
+      <div class="feature-card"><div class="feature-icon">🎯</div><div class="feature-title">خيارات متعددة</div><div class="feature-desc">أسئلة اختيار من متعدد</div></div>
     </div>
   </div>
 </div>
@@ -232,10 +359,7 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
       <div class="card card-gold" style="margin-bottom:14px;">
         <div class="section-title">✨ اسم اللعبة</div>
         <div class="form-row">
-          <div>
-            <label>اختر اسماً مميزاً للعبتك</label>
-            <input type="text" id="gameNameInput" placeholder="مثال: فعاليات العيد / يمعتنا / ليلة العيد" oninput="updateGameNamePreview()" value="فعاليات اللاري">
-          </div>
+          <input type="text" id="gameNameInput" placeholder="مثال: فعاليات العيد / يمعتنا / ليلة العيد" oninput="updateGameNamePreview()" value="فعاليات اللاري">
         </div>
         <div class="game-name-preview" id="gameNamePreview">فعاليات اللاري</div>
         <div class="name-suggestions">
@@ -247,27 +371,76 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
         </div>
       </div>
       <div class="divider"></div>
-      <div class="card" style="margin-bottom:13px;">
-        <div class="section-title">❓ إضافة سؤال</div>
-        <div class="form-row"><input type="text" id="qInput" placeholder="مثال: ما هو الشهر الذي يصوم فيه المسلمون؟" onkeydown="if(event.key==='Enter')addItem('q')"></div>
-        <button class="btn btn-cyan btn-sm" onclick="addItem('q')">+ إضافة سؤال</button>
+
+      <!-- Item Builder -->
+      <div class="item-builder">
+        <div class="item-builder-header">➕ إضافة سؤال أو تحدي</div>
+
+        <div class="form-row">
+          <div>
+            <label>النوع</label>
+            <select id="itemType">
+              <option value="q">❓ سؤال</option>
+              <option value="c">🎯 تحدي</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label>نص السؤال / التحدي</label>
+            <textarea id="itemText" placeholder="اكتب نص السؤال أو التحدي هنا..." rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- Answer field -->
+        <div class="form-row" id="answerFieldRow">
+          <div>
+            <label>الإجابة الصحيحة <span style="color:rgba(255,255,255,0.35);font-weight:400;">(اختياري — ستظهر للمنسق)</span></label>
+            <input type="text" id="itemAnswer" placeholder="مثال: رمضان المبارك">
+          </div>
+        </div>
+
+        <!-- Multiple choice -->
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <label style="margin:0;">خيارات الإجابة <span style="color:rgba(255,255,255,0.35);font-weight:400;">(اختياري)</span></label>
+            <button class="btn btn-ghost-cyan btn-sm" onclick="addOptionRow()">+ إضافة خيار</button>
+          </div>
+          <div id="optionsList" class="options-list"></div>
+        </div>
+
+        <!-- Media upload -->
+        <div style="margin-bottom:14px;">
+          <label>صورة أو فيديو <span style="color:rgba(255,255,255,0.35);font-weight:400;">(اختياري)</span></label>
+          <div class="media-upload-area" onclick="document.getElementById('mediaFileInput').click()">
+            <input type="file" id="mediaFileInput" accept="image/*,video/*" onchange="handleMediaUpload(event)">
+            <div id="mediaUploadPrompt">
+              <div style="font-size:2rem;margin-bottom:6px;">📎</div>
+              <div style="font-size:0.9rem;color:rgba(255,255,255,0.45);">اضغط لرفع صورة أو فيديو</div>
+              <div style="font-size:0.78rem;color:rgba(255,255,255,0.3);margin-top:3px;">JPG, PNG, GIF, MP4, MOV</div>
+            </div>
+            <div id="mediaPreviewArea" class="media-preview hidden"></div>
+          </div>
+          <button class="btn btn-sm" id="clearMediaBtn" style="background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.25);color:#FF8A8A;display:none;" onclick="clearMedia()">✕ حذف الوسائط</button>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-gold" onclick="addItem()">✚ إضافة للقائمة</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadDefaults()">تحميل افتراضي</button>
+          <button class="btn btn-sm" style="background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.25);color:#FF8A8A;" onclick="clearItems()">مسح الكل</button>
+        </div>
       </div>
-      <div class="card" style="margin-bottom:13px;">
-        <div class="section-title">🎯 إضافة تحدي</div>
-        <div class="form-row"><input type="text" id="cInput" placeholder="مثال: قل 5 أسماء أطعمة العيد في 10 ثوانٍ!" onkeydown="if(event.key==='Enter')addItem('c')"></div>
-        <button class="btn btn-ghost-pink btn-sm" onclick="addItem('c')">+ إضافة تحدي</button>
-      </div>
+
+      <!-- List -->
       <div class="card">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:11px;">
           <div class="section-title" style="margin-bottom:0;">📝 القائمة <span id="itemCount" style="background:rgba(244,196,48,0.13);border:1px solid rgba(244,196,48,0.28);border-radius:20px;padding:2px 10px;font-size:0.83rem;">0</span></div>
-          <div style="display:flex;gap:7px;">
-            <button class="btn btn-ghost btn-sm" onclick="loadDefaults()">تحميل افتراضي</button>
-            <button class="btn btn-sm" style="background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.25);color:#FF8A8A;" onclick="clearItems()">مسح الكل</button>
-          </div>
         </div>
         <div class="alert alert-info">💡 تُوزَّع الأسئلة والتحديات عشوائياً على الأظرف</div>
-        <div id="itemList" class="tag-list"></div>
+        <div id="itemList" style="margin-top:10px;"></div>
       </div>
+
       <div style="display:flex;justify-content:flex-end;margin-top:18px;">
         <button class="btn btn-gold" onclick="switchTab(2)">التالي ← الأظرف والجوائز</button>
       </div>
@@ -334,7 +507,6 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
   </div>
   <div class="container">
     <div class="progress-wrap"><div class="progress-fill" id="gameProgress" style="width:0%"></div></div>
-
     <!-- ROULETTE -->
     <div id="phaseRoulette">
       <div class="phase-header">
@@ -350,7 +522,6 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
         </div>
       </div>
     </div>
-
     <!-- ENVELOPES -->
     <div id="phaseEnvelopes" class="hidden">
       <div class="phase-header">
@@ -361,7 +532,6 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
       </div>
       <div class="envelopes-grid" id="envelopesGrid"></div>
     </div>
-
     <!-- PRIZE -->
     <div id="phasePrize" class="hidden">
       <div class="phase-header" style="background:linear-gradient(135deg,rgba(255,107,157,0.13),rgba(244,196,48,0.06));border-color:rgba(255,107,157,0.25);">
@@ -371,10 +541,6 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
       </div>
       <div class="prize-wrap">
         <canvas id="prize-canvas" width="360" height="360" onclick="spinPrizeWheel()"></canvas>
-        <div id="prizeResultBox" class="prize-result-box hidden">
-          <div class="prize-result-label">🎊 الجائزة هي</div>
-          <div class="prize-result-text" id="prizeResultText">-</div>
-        </div>
         <div id="prizeBtn" style="margin-top:18px;text-align:center;">
           <button class="btn btn-gold btn-xl" onclick="spinPrizeWheel()">🎁 دوّر دوامة الجوائز!</button>
         </div>
@@ -402,21 +568,42 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
   </div>
 </div>
 
-<!-- =========== MODAL: CARD =========== -->
+<!-- =========== CARD MODAL =========== -->
 <div class="modal-overlay" id="cardModal">
   <div class="modal">
     <span class="modal-icon" id="modalIcon">✉️</span>
     <div class="modal-type-badge" id="modalBadge">سؤال</div>
     <div class="modal-title" id="modalTitle">السؤال</div>
-    <div class="modal-body" id="modalBody">-</div>
+    <!-- Media -->
+    <div class="modal-media hidden" id="modalMedia"></div>
+    <!-- Question text -->
+    <div class="modal-question" id="modalQuestion">-</div>
+    <!-- Multiple choice -->
+    <div id="modalOptions" class="mc-options hidden"></div>
+    <!-- Answer reveal -->
+    <div class="answer-reveal" id="answerReveal">
+      <div class="answer-reveal-label">✅ الإجابة الصحيحة</div>
+      <div id="answerRevealText">-</div>
+    </div>
     <div class="modal-btns">
-      <button class="btn btn-cyan btn-lg" onclick="handleAnswer(true)">✅ أجاب صح</button>
-      <button class="btn btn-red btn-lg" onclick="handleAnswer(false)">❌ أجاب غلط</button>
+      <button class="btn-show-answer hidden" id="showAnswerBtn" onclick="revealAnswer()">👁️ أظهر الإجابة</button>
+      <button class="btn btn-green btn-lg" id="correctBtn" onclick="handleAnswer(true)">✅ أجاب صح</button>
+      <button class="btn btn-red btn-lg" id="wrongBtn" onclick="handleAnswer(false)">❌ أجاب غلط</button>
     </div>
   </div>
 </div>
 
-<!-- =========== MODAL: RULES =========== -->
+<!-- =========== PRIZE CELEBRATE OVERLAY =========== -->
+<div class="prize-celebrate-overlay" id="prizeCelebrate">
+  <div class="prize-celebrate-box">
+    <span class="prize-celebrate-emoji" id="celebrateEmoji">🎁</span>
+    <div class="prize-celebrate-label">🎊 الجائزة الفائزة هي</div>
+    <div class="prize-celebrate-name" id="celebratePrizeName">-</div>
+    <button class="btn btn-gold btn-xl prize-celebrate-btn" id="celebrateNextBtn" onclick="closeCelebrate()">التالي ✨</button>
+  </div>
+</div>
+
+<!-- =========== RULES MODAL =========== -->
 <div class="modal-overlay" id="rulesModal">
   <div class="modal" style="max-width:570px;text-align:right;">
     <span class="modal-icon" style="display:block;text-align:center;">📋</span>
@@ -466,13 +653,23 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
 })();
 
 // ===== STATE =====
-const G={gameName:'فعاليات اللاري',items:[],envelopeCount:9,prizes:[],players:[],envelopes:[],currentPlayerIdx:-1,currentEnvIdx:-1,scores:{},rouletteSpinning:false,prizeSpinning:false,rouletteAngle:0,prizeAngle:0};
+const G={
+  gameName:'فعاليات اللاري',
+  items:[],     // {type,text,answer,options:[{text,correct}],mediaData,mediaType}
+  envelopeCount:9,prizes:[],players:[],envelopes:[],
+  currentPlayerIdx:-1,currentEnvIdx:-1,scores:{},
+  rouletteSpinning:false,prizeSpinning:false,
+  rouletteAngle:0,prizeAngle:0,
+  pendingPrize:null,pendingNextAction:null
+};
 
+// Temp media for builder
+let tempMediaData=null,tempMediaType=null;
+
+// ===== NAV =====
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-
 function updateGameNamePreview(){const v=document.getElementById('gameNameInput').value||'فعاليات اللاري';document.getElementById('gameNamePreview').textContent=v;G.gameName=v;}
 function setGameName(n){document.getElementById('gameNameInput').value=n;updateGameNamePreview();}
-
 function switchTab(n){
   [1,2,3].forEach(i=>{
     document.getElementById(`tab${i}`).classList.toggle('hidden',i!==n);
@@ -482,38 +679,117 @@ function switchTab(n){
   if(n===3)updateSummary();
 }
 
-function addItem(t){const inp=document.getElementById(t==='q'?'qInput':'cInput');const txt=inp.value.trim();if(!txt)return;G.items.push({type:t,text:txt});inp.value='';renderItems();}
+// ===== OPTIONS BUILDER =====
+let optionRows=[];
+function addOptionRow(val='',correct=false){
+  const idx=optionRows.length;
+  optionRows.push({text:val,correct});
+  renderOptionRows();
+}
+function renderOptionRows(){
+  const list=document.getElementById('optionsList');
+  list.innerHTML=optionRows.map((o,i)=>`
+    <div class="option-row">
+      <button class="option-correct-toggle ${o.correct?'correct':''}" onclick="toggleCorrectOption(${i})" title="حدّد كإجابة صحيحة">✓</button>
+      <input type="text" placeholder="خيار ${String.fromCharCode(0x0623+i)}" value="${o.text}" oninput="optionRows[${i}].text=this.value">
+      <button class="btn btn-sm" style="background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.25);color:#FF8A8A;padding:8px 12px;" onclick="removeOptionRow(${i})">✕</button>
+    </div>
+  `).join('');
+}
+function toggleCorrectOption(i){
+  // Allow multiple correct answers
+  optionRows[i].correct=!optionRows[i].correct;
+  renderOptionRows();
+}
+function removeOptionRow(i){optionRows.splice(i,1);renderOptionRows();}
+
+// ===== MEDIA UPLOAD =====
+function handleMediaUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  const isVideo=file.type.startsWith('video/');
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    tempMediaData=ev.target.result;
+    tempMediaType=isVideo?'video':'image';
+    document.getElementById('mediaUploadPrompt').style.display='none';
+    const prev=document.getElementById('mediaPreviewArea');
+    prev.classList.remove('hidden');
+    prev.innerHTML=isVideo?`<video src="${tempMediaData}" controls style="width:100%;max-height:160px;border-radius:10px;"></video>`:`<img src="${tempMediaData}" style="width:100%;max-height:160px;object-fit:contain;border-radius:10px;">`;
+    document.getElementById('clearMediaBtn').style.display='inline-flex';
+  };
+  reader.readAsDataURL(file);
+}
+function clearMedia(){
+  tempMediaData=null;tempMediaType=null;
+  document.getElementById('mediaFileInput').value='';
+  document.getElementById('mediaPreviewArea').classList.add('hidden');
+  document.getElementById('mediaPreviewArea').innerHTML='';
+  document.getElementById('mediaUploadPrompt').style.display='block';
+  document.getElementById('clearMediaBtn').style.display='none';
+}
+
+// ===== ITEMS =====
+function addItem(){
+  const txt=document.getElementById('itemText').value.trim();
+  if(!txt){alert('يرجى كتابة نص السؤال أو التحدي');return;}
+  const type=document.getElementById('itemType').value;
+  const answer=document.getElementById('itemAnswer').value.trim();
+  const options=optionRows.filter(o=>o.text.trim()).map(o=>({text:o.text.trim(),correct:o.correct}));
+  G.items.push({type,text:txt,answer,options,mediaData:tempMediaData,mediaType:tempMediaType});
+  // Reset builder
+  document.getElementById('itemText').value='';
+  document.getElementById('itemAnswer').value='';
+  optionRows=[];renderOptionRows();clearMedia();
+  renderItems();
+}
 function removeItem(i){G.items.splice(i,1);renderItems();}
 function renderItems(){
   document.getElementById('itemCount').textContent=G.items.length;
-  document.getElementById('itemList').innerHTML=G.items.map((item,i)=>`<div class="tag ${item.type==='q'?'question':'challenge'}"><span>${item.type==='q'?'❓':'🎯'}</span><span class="txt">${item.text}</span><button class="remove" onclick="removeItem(${i})">✕</button></div>`).join('');
+  const letters=['أ','ب','ج','د','هـ','و'];
+  document.getElementById('itemList').innerHTML=G.items.map((item,i)=>`
+    <div class="item-tag">
+      <span class="item-tag-type">${item.type==='q'?'❓':'🎯'}</span>
+      <div class="item-tag-body">
+        <div class="item-tag-text">${item.text}</div>
+        <div class="item-tag-meta">
+          ${item.answer?`<span style="color:#55ff99;">✓ ${item.answer}</span>`:''}
+          ${item.options&&item.options.length?`<span style="color:#74BCFF;">🔤 ${item.options.length} خيارات</span>`:''}
+          ${item.mediaData?`<span style="color:#FD9644;">${item.mediaType==='video'?'🎬 فيديو':'🖼️ صورة'}</span>`:''}
+        </div>
+      </div>
+      <button class="remove" onclick="removeItem(${i})">✕</button>
+    </div>
+  `).join('');
 }
 function clearItems(){G.items=[];renderItems();}
 const DEF_ITEMS=[
-  {type:'q',text:'ما هو الشهر الكريم الذي يصوم فيه المسلمون؟'},
-  {type:'q',text:'كم عدد ركعات صلاة العيد؟'},
-  {type:'q',text:'ما معنى كلمة "فطر" في عيد الفطر؟'},
-  {type:'q',text:'ما هي الأطعمة المشهورة في العيد عندكم؟'},
-  {type:'q',text:'في أي وقت تُصلى صلاة العيد؟'},
-  {type:'q',text:'ما اسم السورة التي تُقرأ في صلاة العيد؟'},
-  {type:'q',text:'ماذا نقول عند التهنئة بالعيد؟'},
-  {type:'q',text:'ما هي زكاة الفطر وما مقدارها؟'},
-  {type:'c',text:'قل 5 أسماء أكلات العيد في 10 ثوانٍ!'},
-  {type:'c',text:'قلّد شخصاً يستلم عيدية صغيرة ويتظاهر أنها كبيرة!'},
-  {type:'c',text:'اذكر 5 أفراد من عائلتك وصف كل واحد بكلمة واحدة!'},
-  {type:'c',text:'غنّ أي أغنية للعيد بصوت عالٍ لـ5 ثوانٍ!'},
-  {type:'c',text:'قلّد أحد أفراد العائلة والبقية تخمّنوا!'},
-  {type:'c',text:'احكِ ذكرى مضحكة من أحد أعياد الماضي!'},
+  {type:'q',text:'ما هو الشهر الكريم الذي يصوم فيه المسلمون؟',answer:'رمضان',options:[{text:'رجب',correct:false},{text:'رمضان',correct:true},{text:'شعبان',correct:false},{text:'شوال',correct:false}],mediaData:null,mediaType:null},
+  {type:'q',text:'كم عدد ركعات صلاة العيد؟',answer:'ركعتان',options:[],mediaData:null,mediaType:null},
+  {type:'q',text:'ما معنى كلمة "فطر" في عيد الفطر؟',answer:'الإفطار بعد الصوم',options:[],mediaData:null,mediaType:null},
+  {type:'q',text:'ما هي الأطعمة المشهورة في العيد عندكم؟',answer:'',options:[],mediaData:null,mediaType:null},
+  {type:'q',text:'في أي وقت تُصلى صلاة العيد؟',answer:'بعد شروق الشمس',options:[],mediaData:null,mediaType:null},
+  {type:'q',text:'ما اسم السورة التي تُقرأ في صلاة العيد؟',answer:'سورة الأعلى أو الغاشية',options:[],mediaData:null,mediaType:null},
+  {type:'q',text:'ماذا نقول عند التهنئة بالعيد؟',answer:'عيد مبارك / كل عام وأنتم بخير',options:[],mediaData:null,mediaType:null},
+  {type:'q',text:'ما هي زكاة الفطر وعلى من تجب؟',answer:'تجب على كل مسلم مستطيع',options:[],mediaData:null,mediaType:null},
+  {type:'c',text:'قل 5 أسماء أكلات العيد في 10 ثوانٍ!',answer:'',options:[],mediaData:null,mediaType:null},
+  {type:'c',text:'قلّد شخصاً يستلم عيدية صغيرة ويتظاهر أنها كبيرة!',answer:'',options:[],mediaData:null,mediaType:null},
+  {type:'c',text:'اذكر 5 أفراد من عائلتك وصف كل واحد بكلمة واحدة!',answer:'',options:[],mediaData:null,mediaType:null},
+  {type:'c',text:'غنّ أي أغنية للعيد بصوت عالٍ لـ5 ثوانٍ!',answer:'',options:[],mediaData:null,mediaType:null},
+  {type:'c',text:'قلّد أحد أفراد العائلة والبقية تخمّنوا!',answer:'',options:[],mediaData:null,mediaType:null},
+  {type:'c',text:'احكِ ذكرى مضحكة من أحد أعياد الماضي!',answer:'',options:[],mediaData:null,mediaType:null},
 ];
-function loadDefaults(){G.items=[...DEF_ITEMS];renderItems();}
+function loadDefaults(){G.items=DEF_ITEMS.map(i=>({...i,options:[...i.options]}));renderItems();}
 
+// ===== ENV COUNT =====
 let envCount=9;
 function changeEnvCount(d){envCount=Math.max(3,Math.min(30,envCount+d));envCount=Math.round(envCount/3)*3;if(envCount<3)envCount=3;if(envCount>30)envCount=30;document.getElementById('envCountDisplay').textContent=envCount;}
 
+// ===== PRIZES =====
 function addPrizeField(v=''){const div=document.createElement('div');div.className='prize-item';div.innerHTML=`<input type="text" placeholder="أدخل جائزة" class="prize-field" value="${v}"><button class="btn btn-red btn-sm" onclick="this.parentElement.remove()">✕</button>`;document.getElementById('prizeInputs').appendChild(div);}
 const DEF_PRIZES=['شوكولاتة 🍫','كرت شحن 💳','عيدية خاصة 💰','لعبة صغيرة 🎮','حلوى العيد 🍬','جائزة مفاجأة 🎁','نقطة ذهبية ⭐','تحدي إضافي 🎯'];
 function loadDefaultPrizes(){document.getElementById('prizeInputs').innerHTML='';DEF_PRIZES.forEach(p=>addPrizeField(p));}
 
+// ===== PLAYERS =====
 function addPlayer(){const inp=document.getElementById('playerInput');const name=inp.value.trim();if(!name)return;if(G.players.find(p=>p.name===name)){inp.value='';return;}G.players.push({name,num:0,score:0});inp.value='';renderPlayers();}
 function removePlayer(i){G.players.splice(i,1);renderPlayers();}
 function renderPlayers(){document.getElementById('playersList').innerHTML=G.players.map((p,i)=>`<div class="player-badge"><div class="player-num">${i+1}</div><span style="flex:1;font-weight:600;">${p.name}</span><button onclick="removePlayer(${i})" style="background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:1rem;">✕</button></div>`).join('');}
@@ -523,6 +799,7 @@ function updateSummary(){
   document.getElementById('summaryGrid').innerHTML=`<div class="sum-item"><div class="sum-val" style="color:${G.items.length>0?'var(--gold)':'#FF8A8A'}">${G.items.length}</div><div class="sum-label">أسئلة وتحديات</div></div><div class="sum-item"><div class="sum-val" style="color:${G.players.length>=2?'var(--gold)':'#FF8A8A'}">${G.players.length}</div><div class="sum-label">لاعبون</div></div><div class="sum-item"><div class="sum-val">${envCount}</div><div class="sum-label">ظرف</div></div><div class="sum-item"><div class="sum-val">${prizes.length}</div><div class="sum-label">جائزة</div></div>`;
 }
 
+// ===== START GAME =====
 function startGame(){
   if(G.players.length<2){alert('يرجى إضافة لاعبين (الحد الأدنى 2)');return;}
   if(G.items.length===0)loadDefaults();
@@ -547,8 +824,10 @@ function buildEnvelopes(){
   G.envelopes=[];
   for(let i=0;i<G.envelopeCount;i++)G.envelopes.push({...pool[i%pool.length],opened:false,color:colors[i%colors.length]});
 }
+
 function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
 
+// ===== PHASES =====
 function setPhase(ph){
   G.phase=ph;
   document.getElementById('phaseRoulette').classList.toggle('hidden',ph!=='roulette');
@@ -556,7 +835,6 @@ function setPhase(ph){
   document.getElementById('phasePrize').classList.toggle('hidden',ph!=='prize');
   window.scrollTo(0,0);
 }
-
 function updateGameInfo(){
   const opened=G.envelopes.filter(e=>e.opened).length;
   document.getElementById('envsLeft').textContent=G.envelopeCount-opened;
@@ -570,26 +848,21 @@ function initRoulette(){
   document.getElementById('spinResult').classList.add('hidden');
   document.getElementById('rouletteBtn').innerHTML='<button class="btn btn-gold btn-xl" onclick="spinRoulette()">🎡 دوّر الروليت!</button>';
 }
-
 function drawRoulette(angle){
   const cv=document.getElementById('roulette-canvas');const ctx=cv.getContext('2d');
   const W=cv.width,H=cv.height,cx=W/2,cy=H/2,r=W/2-12;
   ctx.clearRect(0,0,W,H);
   const n=G.players.length;const sa=(2*Math.PI)/n;
-  const cols=['#FF6B6B','#A29BFE','#FD9644','#FF8ECA','#FFEAA7','#74B9FF','#FF7B7B','#55EFC4','#FD9644','#C39BD3','#FF6348','#00CEC9'];
+  const cols=['#FF6B6B','#A29BFE','#FD9644','#FF8ECA','#FFEAA7','#74B9FF','#FF7B7B','#55EFC4','#FD9644','#C39BD3'];
   for(let i=0;i<n;i++){
     const s=angle+i*sa-Math.PI/2,e=s+sa;
     ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
     const grd=ctx.createRadialGradient(cx,cy,r*0.25,cx,cy,r);
     grd.addColorStop(0,lighten(cols[i%cols.length],28));grd.addColorStop(1,cols[i%cols.length]);
-    ctx.fillStyle=grd;ctx.fill();
-    ctx.strokeStyle='rgba(0,0,0,0.22)';ctx.lineWidth=2;ctx.stroke();
-    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+sa/2);
-    ctx.textAlign='right';ctx.fillStyle='white';
-    ctx.font=`bold ${Math.max(10,17-Math.floor(n/2))}px Tajawal`;
-    ctx.shadowColor='rgba(0,0,0,0.7)';ctx.shadowBlur=5;
-    ctx.fillText(`${G.players[i].name} (${G.players[i].num})`,r-12,5);
-    ctx.restore();
+    ctx.fillStyle=grd;ctx.fill();ctx.strokeStyle='rgba(0,0,0,0.22)';ctx.lineWidth=2;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+sa/2);ctx.textAlign='right';ctx.fillStyle='white';
+    ctx.font=`bold ${Math.max(10,17-Math.floor(n/2))}px Tajawal`;ctx.shadowColor='rgba(0,0,0,0.7)';ctx.shadowBlur=5;
+    ctx.fillText(`${G.players[i].name} (${G.players[i].num})`,r-12,5);ctx.restore();
   }
   ctx.beginPath();ctx.arc(cx,cy,r,0,2*Math.PI);ctx.strokeStyle='rgba(244,196,48,0.7)';ctx.lineWidth=4;ctx.stroke();
   ctx.beginPath();ctx.arc(cx,cy,26,0,2*Math.PI);
@@ -598,17 +871,10 @@ function drawRoulette(angle){
   ctx.fillStyle='#F4C430';ctx.font='15px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🎡',cx,cy);
   ctx.save();ctx.translate(cx,cy-r+5);ctx.beginPath();ctx.moveTo(-11,0);ctx.lineTo(11,0);ctx.lineTo(0,28);ctx.closePath();ctx.fillStyle='#F4C430';ctx.fill();ctx.strokeStyle='rgba(0,0,0,0.45)';ctx.lineWidth=1.5;ctx.stroke();ctx.restore();
 }
-
-function lighten(hex,pct){
-  const n=parseInt(hex.replace('#',''),16);
-  const r=Math.min(255,((n>>16)&0xff)+pct),g=Math.min(255,((n>>8)&0xff)+pct),b=Math.min(255,(n&0xff)+pct);
-  return`rgb(${r},${g},${b})`;
-}
-
+function lighten(hex,pct){const n=parseInt(hex.replace('#',''),16);const r=Math.min(255,((n>>16)&0xff)+pct),g=Math.min(255,((n>>8)&0xff)+pct),b=Math.min(255,(n&0xff)+pct);return`rgb(${r},${g},${b})`;}
 function spinRoulette(){
   if(G.rouletteSpinning)return;
-  const opened=G.envelopes.filter(e=>e.opened).length;
-  if(opened>=G.envelopeCount){endGame();return;}
+  const opened=G.envelopes.filter(e=>e.opened).length;if(opened>=G.envelopeCount){endGame();return;}
   G.rouletteSpinning=true;
   document.getElementById('spinResult').classList.add('hidden');
   document.getElementById('rouletteBtn').innerHTML='<div style="font-size:0.95rem;color:rgba(255,255,255,0.35);text-align:center;padding:10px;">جاري الدوران...</div>';
@@ -616,21 +882,18 @@ function spinRoulette(){
   const target=G.rouletteAngle+extra+Math.random()*2*Math.PI;
   const dur=3500;const t0=performance.now();const a0=G.rouletteAngle;
   function anim(now){
-    const el=now-t0;const t=Math.min(el/dur,1);
-    const ease=1-Math.pow(1-t,3);G.rouletteAngle=a0+(target-a0)*ease;drawRoulette(G.rouletteAngle);
+    const el=now-t0;const t=Math.min(el/dur,1);const ease=1-Math.pow(1-t,3);G.rouletteAngle=a0+(target-a0)*ease;drawRoulette(G.rouletteAngle);
     if(t<1){requestAnimationFrame(anim);return;}
     G.rouletteSpinning=false;
     const n=G.players.length;const sa=(2*Math.PI)/n;
     const na=((G.rouletteAngle%(2*Math.PI))+(2*Math.PI))%(2*Math.PI);
     const idx=Math.floor(((2*Math.PI-na)%(2*Math.PI))/sa)%n;
     G.currentPlayerIdx=idx;const player=G.players[idx];
-    const res=document.getElementById('spinResult');
-    res.textContent=`🎉 ${player.name} — رقم ${player.num}`;res.classList.remove('hidden');
+    const res=document.getElementById('spinResult');res.textContent=`🎉 ${player.name} — رقم ${player.num}`;res.classList.remove('hidden');
     document.getElementById('rouletteBtn').innerHTML=`<button class="btn btn-pink btn-xl" onclick="goToEnvelopes()">اختر ظرفك يا ${player.name}! ✉️</button>`;
   }
   requestAnimationFrame(anim);
 }
-
 function goToEnvelopes(){
   const p=G.players[G.currentPlayerIdx];
   document.getElementById('activePlayerName').textContent=p.name;
@@ -638,30 +901,146 @@ function goToEnvelopes(){
   renderEnvelopes();setPhase('envelopes');
 }
 
-// ===== ENVELOPES =====
-const ENV_ICONS=['🎀','🌟','🎊','💫','🎈','✨','🎁','🌙','🎉','💎','🌸','⭐'];
+// ===== REAL SVG ENVELOPES =====
+// Envelope color themes: [body, flap, shadow, accent, decorLine]
+const ENV_THEMES=[
+  ['#C0392B','#E74C3C','#922B21','#FADADD'],
+  ['#1A8C87','#4ECDC4','#0E6B67','#D4EFEF'],
+  ['#6C5CE7','#A29BFE','#4A3AA8','#E8E4FF'],
+  ['#A04000','#E67E22','#784212','#FAD9C5'],
+  ['#880E4F','#E91E8C','#5C0835','#FADADD'],
+  ['#8C6000','#F4C430','#5A3E00','#FFF9E6'],
+  ['#1565C0','#1E90FF','#0D47A1','#D0E8FF'],
+  ['#00695C','#26A69A','#004D40','#C8F5F0'],
+  ['#7F0000','#FF4757','#5C0000','#FADADD'],
+];
+
+function makeEnvelopeSVG(theme,num,isOpen,icon){
+  const [body,flap,shadow,accent]=ENV_THEMES[theme%ENV_THEMES.length];
+  const W=180,H=135;
+  if(isOpen){
+    // Opened envelope — flat view
+    return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="20" width="${W-4}" height="${H-24}" rx="8" fill="${body}" />
+      <rect x="2" y="20" width="${W-4}" height="${H-24}" rx="8" fill="rgba(0,0,0,0.15)" />
+      <line x1="2" y1="20" x2="${W/2}" y2="${H-20}" stroke="${shadow}" stroke-width="1.5" opacity="0.4"/>
+      <line x1="${W-2}" y1="20" x2="${W/2}" y2="${H-20}" stroke="${shadow}" stroke-width="1.5" opacity="0.4"/>
+      <text x="${W/2}" y="${H/2+16}" text-anchor="middle" font-size="30" font-family="serif">${icon}</text>
+    </svg>`;
+  }
+  // Closed envelope with flap pointing up
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+    <!-- Drop shadow -->
+    <rect x="6" y="24" width="${W-8}" height="${H-28}" rx="10" fill="rgba(0,0,0,0.35)" />
+    <!-- Body -->
+    <rect x="2" y="20" width="${W-4}" height="${H-22}" rx="10" fill="${body}" />
+    <!-- Bottom triangle creases -->
+    <line x1="2" y1="${H-2}" x2="${W/2}" y2="${H/2+8}" stroke="${shadow}" stroke-width="1.5" opacity="0.5"/>
+    <line x1="${W-2}" y1="${H-2}" x2="${W/2}" y2="${H/2+8}" stroke="${shadow}" stroke-width="1.5" opacity="0.5"/>
+    <!-- Side triangles -->
+    <line x1="2" y1="20" x2="${W/2}" y2="${H/2+8}" stroke="${shadow}" stroke-width="1.2" opacity="0.4"/>
+    <line x1="${W-2}" y1="20" x2="${W/2}" y2="${H/2+8}" stroke="${shadow}" stroke-width="1.2" opacity="0.4"/>
+    <!-- Flap (closed, pointing up) -->
+    <polygon points="2,22 ${W/2},${H/2-6} ${W-2},22" fill="${flap}" />
+    <polygon points="2,22 ${W/2},${H/2-6} ${W-2},22" fill="rgba(0,0,0,0.12)" />
+    <!-- Flap highlight -->
+    <line x1="2" y1="22" x2="${W/2}" y2="${H/2-6}" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+    <line x1="${W-2}" y1="22" x2="${W/2}" y2="${H/2-6}" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+    <!-- Seal circle -->
+    <circle cx="${W/2}" cy="${H/2+10}" r="18" fill="${flap}" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+    <circle cx="${W/2}" cy="${H/2+10}" r="12" fill="${shadow}" opacity="0.4"/>
+    <!-- Seal icon — star -->
+    <text x="${W/2}" y="${H/2+15}" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.85)" font-family="serif">✦</text>
+    <!-- Number badge bottom-right -->
+    <circle cx="${W-20}" cy="${H-14}" r="13" fill="rgba(0,0,0,0.45)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+    <text x="${W-20}" y="${H-10}" text-anchor="middle" font-size="11" font-weight="bold" fill="white" font-family="Tajawal,sans-serif">${num}</text>
+    <!-- Shine -->
+    <rect x="2" y="20" width="${W-4}" height="28" rx="10" fill="rgba(255,255,255,0.08)"/>
+  </svg>`;
+}
+
 function renderEnvelopes(){
-  document.getElementById('envelopesGrid').innerHTML=G.envelopes.map((env,i)=>{
-    const icon=env.opened?(env.type==='q'?'❓':'🎯'):ENV_ICONS[i%ENV_ICONS.length];
-    const label=env.opened?(env.type==='q'?'سؤال':'تحدي'):'اضغط!';
+  const grid=document.getElementById('envelopesGrid');
+  grid.innerHTML=G.envelopes.map((env,i)=>{
+    const svgOpen=env.opened?makeEnvelopeSVG(i,i+1,true,env.type==='q'?'❓':'🎯'):'';
+    const svgClosed=!env.opened?makeEnvelopeSVG(i,i+1,false,''):'';
     const click=env.opened?'':'openEnvelope('+i+')';
-    return`<div class="envelope ${env.color} ${env.opened?'opened':''}" onclick="${click}" style="animation-delay:${i*0.055}s"><div class="env-big-icon">${icon}</div><div class="env-label">${label}</div><div class="env-num-bg">${i+1}</div></div>`;
+    return`<div class="envelope ${env.opened?'opened':''}" onclick="${click}" style="animation-delay:${i*0.055}s">${env.opened?svgOpen:svgClosed}</div>`;
   }).join('');
 }
 
 function openEnvelope(i){
   const env=G.envelopes[i];if(env.opened)return;G.currentEnvIdx=i;
+  // Setup modal
   document.getElementById('modalIcon').textContent=env.type==='q'?'❓':'🎯';
   document.getElementById('modalTitle').textContent=env.type==='q'?'❓ سؤال':'🎯 تحدي';
   document.getElementById('modalBadge').textContent=env.type==='q'?'سؤال':'تحدي';
   document.getElementById('modalBadge').className='modal-type-badge '+(env.type==='q'?'badge-q':'badge-c');
-  document.getElementById('modalBody').textContent=env.text;
+  document.getElementById('modalQuestion').textContent=env.text;
+  // Media
+  const media=document.getElementById('modalMedia');
+  if(env.mediaData){
+    media.classList.remove('hidden');
+    media.innerHTML=env.mediaType==='video'?`<video src="${env.mediaData}" controls style="width:100%;max-height:260px;border-radius:14px;"></video>`:`<img src="${env.mediaData}" style="width:100%;max-height:260px;object-fit:contain;border-radius:14px;">`;
+  } else {
+    media.classList.add('hidden');media.innerHTML='';
+  }
+  // Options
+  const optDiv=document.getElementById('modalOptions');
+  const letters=['أ','ب','ج','د','هـ'];
+  if(env.options&&env.options.length){
+    optDiv.classList.remove('hidden');
+    optDiv.innerHTML=env.options.map((o,idx)=>`
+      <button class="mc-option" id="mcOpt${idx}" onclick="selectMCOption(${idx},${o.correct})">
+        <span class="mc-letter">${letters[idx]||idx+1}</span>
+        <span>${o.text}</span>
+      </button>
+    `).join('');
+  } else {
+    optDiv.classList.add('hidden');optDiv.innerHTML='';
+  }
+  // Answer reveal
+  document.getElementById('answerReveal').classList.remove('show');document.getElementById('answerReveal').style.display='none';
+  if(env.answer){
+    document.getElementById('answerRevealText').textContent=env.answer;
+    document.getElementById('showAnswerBtn').classList.remove('hidden');
+  } else {
+    document.getElementById('showAnswerBtn').classList.add('hidden');
+  }
+  // Buttons
+  document.getElementById('correctBtn').disabled=false;document.getElementById('wrongBtn').disabled=false;
   document.getElementById('cardModal').classList.add('open');
 }
 
-// ===== ANSWER — wrong = END TURN, no re-pick =====
+let mcAnswered=false;
+function selectMCOption(idx,isCorrect){
+  if(mcAnswered)return;mcAnswered=true;
+  const opts=document.querySelectorAll('.mc-option');
+  opts[idx].classList.add(isCorrect?'selected-correct':'selected-wrong');
+  // Reveal all correct answers
+  opts.forEach((el,i)=>{
+    if(G.envelopes[G.currentEnvIdx].options[i].correct && i!==idx) el.classList.add('reveal-correct');
+  });
+  // Pre-select answer button
+  if(isCorrect){
+    document.getElementById('correctBtn').style.boxShadow='0 0 20px rgba(0,230,118,0.6)';
+  } else {
+    document.getElementById('wrongBtn').style.boxShadow='0 0 20px rgba(255,71,87,0.6)';
+    revealAnswer();
+  }
+}
+
+function revealAnswer(){
+  document.getElementById('answerReveal').style.display='block';
+  document.getElementById('answerReveal').classList.add('show');
+}
+
+// ===== ANSWER HANDLING =====
 function handleAnswer(correct){
   document.getElementById('cardModal').classList.remove('open');
+  mcAnswered=false;
+  // Reset button styles
+  document.getElementById('correctBtn').style.boxShadow='';document.getElementById('wrongBtn').style.boxShadow='';
   G.envelopes[G.currentEnvIdx].opened=true;
   updateGameInfo();
   const player=G.players[G.currentPlayerIdx];
@@ -669,16 +1048,13 @@ function handleAnswer(correct){
   if(correct){
     G.scores[player.name]=(G.scores[player.name]||0)+1;
     document.getElementById('prizePlayerName').textContent=player.name;
-    document.getElementById('prizeResultBox').classList.add('hidden');
     document.getElementById('prizeBtn').innerHTML='<button class="btn btn-gold btn-xl" onclick="spinPrizeWheel()">🎁 دوّر دوامة الجوائز!</button>';
     G.prizeSpinning=false;drawPrizeWheel(G.prizeAngle);setPhase('prize');
   } else {
-    // Wrong answer → end turn → roulette again
-    if(opened>=G.envelopeCount){endGame();}
-    else{showWrongAndRoulette(player.name);}
+    if(opened>=G.envelopeCount)endGame();
+    else showWrongAndRoulette(player.name);
   }
 }
-
 function showWrongAndRoulette(name){
   setPhase('roulette');
   const old=document.getElementById('wrongBanner');if(old)old.remove();
@@ -716,32 +1092,48 @@ function drawPrizeWheel(angle){
 
 function spinPrizeWheel(){
   if(G.prizeSpinning)return;G.prizeSpinning=true;
-  document.getElementById('prizeResultBox').classList.add('hidden');
   document.getElementById('prizeBtn').innerHTML='<div style="font-size:0.95rem;color:rgba(255,255,255,0.35);text-align:center;padding:10px;">جاري الدوران...</div>';
   const extra=(6+Math.floor(Math.random()*6))*2*Math.PI;
   const target=G.prizeAngle+extra+Math.random()*2*Math.PI;
   const dur=4000;const t0=performance.now();const a0=G.prizeAngle;
   function anim(now){
-    const el=now-t0;const t=Math.min(el/dur,1);
-    const ease=1-Math.pow(1-t,4);G.prizeAngle=a0+(target-a0)*ease;drawPrizeWheel(G.prizeAngle);
+    const el=now-t0;const t=Math.min(el/dur,1);const ease=1-Math.pow(1-t,4);G.prizeAngle=a0+(target-a0)*ease;drawPrizeWheel(G.prizeAngle);
     if(t<1){requestAnimationFrame(anim);return;}
     G.prizeSpinning=false;
     const n=G.prizes.length;const sa=(2*Math.PI)/n;
     const na=((G.prizeAngle%(2*Math.PI))+(2*Math.PI))%(2*Math.PI);
     const idx=Math.floor(((2*Math.PI-na)%(2*Math.PI))/sa)%n;
     const prize=G.prizes[idx];
-    document.getElementById('prizeResultText').textContent=prize;
-    document.getElementById('prizeResultBox').classList.remove('hidden');
-    confetti();
+    // Store pending action
     const opened=G.envelopes.filter(e=>e.opened).length;
-    if(opened>=G.envelopeCount){document.getElementById('prizeBtn').innerHTML='<button class="btn btn-gold btn-xl" onclick="endGame()">🏆 عرض النتائج</button>';}
-    else{document.getElementById('prizeBtn').innerHTML='<button class="btn btn-pink btn-xl" onclick="nextTurn()">التالي ← 🎡</button>';}
+    G.pendingPrize=prize;
+    G.pendingNextAction=opened>=G.envelopeCount?'end':'next';
+    showPrizeCelebration(prize,opened>=G.envelopeCount);
   }
   requestAnimationFrame(anim);
 }
 
+// ===== PRIZE CELEBRATION OVERLAY =====
+const PRIZE_EMOJIS=['🎁','🏆','💰','🍫','⭐','🎊','💎','🎮','🎀'];
+function showPrizeCelebration(prize,isLast){
+  // Pick a random emoji from prize string or generic
+  const emojiMatch=prize.match(/[\u{1F300}-\u{1FFFF}]/u);
+  const emoji=emojiMatch?emojiMatch[0]:PRIZE_EMOJIS[Math.floor(Math.random()*PRIZE_EMOJIS.length)];
+  document.getElementById('celebrateEmoji').textContent=emoji;
+  document.getElementById('celebratePrizeName').textContent=prize;
+  document.getElementById('celebrateNextBtn').textContent=isLast?'🏆 عرض النتائج':'التالي ✨';
+  document.getElementById('prizeCelebrate').classList.add('open');
+  confetti();confetti();
+}
+function closeCelebrate(){
+  document.getElementById('prizeCelebrate').classList.remove('open');
+  if(G.pendingNextAction==='end')endGame();
+  else nextTurn();
+}
+
 function nextTurn(){const b=document.getElementById('wrongBanner');if(b)b.remove();setPhase('roulette');initRoulette();}
 
+// ===== END =====
 function endGame(){
   const sorted=Object.entries(G.scores).sort((a,b)=>b[1]-a[1]);
   const medals=['🥇','🥈','🥉'];
@@ -750,6 +1142,7 @@ function endGame(){
 }
 function restartGame(){goTo('screenSetup');switchTab(1);}
 
+// ===== CONFETTI =====
 function confetti(){
   const cols=['#F4C430','#FF6B9D','#A29BFE','#74BCFF','#55EFC4','#FD9644','#FF4757'];
   for(let i=0;i<70;i++){
@@ -759,7 +1152,7 @@ function confetti(){
   }
 }
 
-// INIT
+// ===== INIT =====
 loadDefaults();loadDefaultPrizes();renderItems();renderPlayers();
 </script>
 </body>
