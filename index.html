@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فعاليات اللاري</title>
+<title>زواره بلس</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -321,7 +321,7 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
   <div class="brand-logo">
     <div class="logo-badge">🎊 لعبة العائلة</div>
     <span class="larry-moon">🌙</span>
-    <div class="game-title-display" id="welcomeTitle">فعاليات اللاري</div>
+    <div class="game-title-display" id="welcomeTitle">زواره بلس</div>
     <div class="larry-sub">✦ عيد مبارك ✦</div>
   </div>
   <div class="container">
@@ -359,10 +359,11 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
       <div class="card card-gold" style="margin-bottom:14px;">
         <div class="section-title">✨ اسم اللعبة</div>
         <div class="form-row">
-          <input type="text" id="gameNameInput" placeholder="مثال: فعاليات العيد / يمعتنا / ليلة العيد" oninput="updateGameNamePreview()" value="فعاليات اللاري">
+          <input type="text" id="gameNameInput" placeholder="مثال: فعاليات العيد / يمعتنا / ليلة العيد" oninput="updateGameNamePreview()" value="زواره بلس">
         </div>
-        <div class="game-name-preview" id="gameNamePreview">فعاليات اللاري</div>
+        <div class="game-name-preview" id="gameNamePreview">زواره بلس</div>
         <div class="name-suggestions">
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('زواره بلس')">زواره بلس</button>
           <button class="btn btn-ghost btn-sm" onclick="setGameName('فعاليات اللاري')">فعاليات اللاري</button>
           <button class="btn btn-ghost btn-sm" onclick="setGameName('فعاليات العيد')">فعاليات العيد</button>
           <button class="btn btn-ghost btn-sm" onclick="setGameName('يمعتنا 🎊')">يمعتنا 🎊</button>
@@ -399,6 +400,21 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
             <label>الإجابة الصحيحة <span style="color:rgba(255,255,255,0.35);font-weight:400;">(اختياري — ستظهر للمنسق)</span></label>
             <input type="text" id="itemAnswer" placeholder="مثال: رمضان المبارك">
           </div>
+        </div>
+
+        <!-- Answer media upload -->
+        <div style="margin-bottom:14px;">
+          <label>صورة أو فيديو للإجابة <span style="color:rgba(255,255,255,0.35);font-weight:400;">(اختياري — تظهر عند كشف الإجابة)</span></label>
+          <div class="media-upload-area" onclick="document.getElementById('answerMediaFileInput').click()">
+            <input type="file" id="answerMediaFileInput" accept="image/*,video/*" onchange="handleAnswerMediaUpload(event)">
+            <div id="answerMediaUploadPrompt">
+              <div style="font-size:1.8rem;margin-bottom:5px;">✅📎</div>
+              <div style="font-size:0.88rem;color:rgba(255,255,255,0.45);">اضغط لرفع صورة أو فيديو للإجابة</div>
+              <div style="font-size:0.76rem;color:rgba(255,255,255,0.3);margin-top:3px;">JPG, PNG, GIF, MP4, MOV</div>
+            </div>
+            <div id="answerMediaPreviewArea" class="media-preview hidden"></div>
+          </div>
+          <button class="btn btn-sm" id="clearAnswerMediaBtn" style="background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.25);color:#FF8A8A;display:none;margin-top:6px;" onclick="clearAnswerMedia()">✕ حذف وسائط الإجابة</button>
         </div>
 
         <!-- Multiple choice -->
@@ -498,7 +514,7 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
 <!-- =========== GAME =========== -->
 <div class="screen" id="screenGame">
   <div class="game-header">
-    <div class="game-header-title" id="gameHeaderTitle">فعاليات اللاري 🎊</div>
+    <div class="game-header-title" id="gameHeaderTitle">زواره بلس 🎊</div>
     <div style="display:flex;gap:7px;flex-wrap:wrap;">
       <div class="info-chip">✉️ <span id="envsLeft">-</span></div>
       <div class="info-chip">👥 <span id="playersCount">-</span></div>
@@ -583,7 +599,8 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
     <!-- Answer reveal -->
     <div class="answer-reveal" id="answerReveal">
       <div class="answer-reveal-label">✅ الإجابة الصحيحة</div>
-      <div id="answerRevealText">-</div>
+      <div id="answerRevealText" style="margin-bottom:8px;">-</div>
+      <div id="answerRevealMedia" class="hidden" style="margin-top:10px;border-radius:12px;overflow:hidden;max-height:240px;"></div>
     </div>
     <div class="modal-btns">
       <button class="btn-show-answer hidden" id="showAnswerBtn" onclick="revealAnswer()">👁️ أظهر الإجابة</button>
@@ -654,7 +671,7 @@ label{display:block;font-size:0.87rem;color:rgba(255,255,255,0.5);margin-bottom:
 
 // ===== STATE =====
 const G={
-  gameName:'فعاليات اللاري',
+  gameName:'زواره بلس',
   items:[],     // {type,text,answer,options:[{text,correct}],mediaData,mediaType}
   envelopeCount:9,prizes:[],players:[],envelopes:[],
   currentPlayerIdx:-1,currentEnvIdx:-1,scores:{},
@@ -665,10 +682,11 @@ const G={
 
 // Temp media for builder
 let tempMediaData=null,tempMediaType=null;
+let tempAnswerMediaData=null,tempAnswerMediaType=null;
 
 // ===== NAV =====
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-function updateGameNamePreview(){const v=document.getElementById('gameNameInput').value||'فعاليات اللاري';document.getElementById('gameNamePreview').textContent=v;G.gameName=v;}
+function updateGameNamePreview(){const v=document.getElementById('gameNameInput').value||'زواره بلس';document.getElementById('gameNamePreview').textContent=v;G.gameName=v;}
 function setGameName(n){document.getElementById('gameNameInput').value=n;updateGameNamePreview();}
 function switchTab(n){
   [1,2,3].forEach(i=>{
@@ -728,6 +746,33 @@ function clearMedia(){
   document.getElementById('clearMediaBtn').style.display='none';
 }
 
+// ===== ANSWER MEDIA =====
+function handleAnswerMediaUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  const isVideo=file.type.startsWith('video/');
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    tempAnswerMediaData=ev.target.result;
+    tempAnswerMediaType=isVideo?'video':'image';
+    document.getElementById('answerMediaUploadPrompt').style.display='none';
+    const prev=document.getElementById('answerMediaPreviewArea');
+    prev.classList.remove('hidden');
+    prev.innerHTML=isVideo
+      ?`<video src="${tempAnswerMediaData}" controls style="width:100%;max-height:160px;border-radius:10px;"></video>`
+      :`<img src="${tempAnswerMediaData}" style="width:100%;max-height:160px;object-fit:contain;border-radius:10px;">`;
+    document.getElementById('clearAnswerMediaBtn').style.display='inline-flex';
+  };
+  reader.readAsDataURL(file);
+}
+function clearAnswerMedia(){
+  tempAnswerMediaData=null;tempAnswerMediaType=null;
+  document.getElementById('answerMediaFileInput').value='';
+  document.getElementById('answerMediaPreviewArea').classList.add('hidden');
+  document.getElementById('answerMediaPreviewArea').innerHTML='';
+  document.getElementById('answerMediaUploadPrompt').style.display='block';
+  document.getElementById('clearAnswerMediaBtn').style.display='none';
+}
+
 // ===== ITEMS =====
 function addItem(){
   const txt=document.getElementById('itemText').value.trim();
@@ -735,11 +780,11 @@ function addItem(){
   const type=document.getElementById('itemType').value;
   const answer=document.getElementById('itemAnswer').value.trim();
   const options=optionRows.filter(o=>o.text.trim()).map(o=>({text:o.text.trim(),correct:o.correct}));
-  G.items.push({type,text:txt,answer,options,mediaData:tempMediaData,mediaType:tempMediaType});
+  G.items.push({type,text:txt,answer,options,mediaData:tempMediaData,mediaType:tempMediaType,answerMediaData:tempAnswerMediaData,answerMediaType:tempAnswerMediaType});
   // Reset builder
   document.getElementById('itemText').value='';
   document.getElementById('itemAnswer').value='';
-  optionRows=[];renderOptionRows();clearMedia();
+  optionRows=[];renderOptionRows();clearMedia();clearAnswerMedia();
   renderItems();
 }
 function removeItem(i){G.items.splice(i,1);renderItems();}
@@ -755,6 +800,7 @@ function renderItems(){
           ${item.answer?`<span style="color:#55ff99;">✓ ${item.answer}</span>`:''}
           ${item.options&&item.options.length?`<span style="color:#74BCFF;">🔤 ${item.options.length} خيارات</span>`:''}
           ${item.mediaData?`<span style="color:#FD9644;">${item.mediaType==='video'?'🎬 فيديو':'🖼️ صورة'}</span>`:''}
+          ${item.answerMediaData?`<span style="color:#A29BFE;">${item.answerMediaType==='video'?'🎬 فيديو إجابة':'🖼️ صورة إجابة'}</span>`:''}
         </div>
       </div>
       <button class="remove" onclick="removeItem(${i})">✕</button>
@@ -763,20 +809,20 @@ function renderItems(){
 }
 function clearItems(){G.items=[];renderItems();}
 const DEF_ITEMS=[
-  {type:'q',text:'ما هو الشهر الكريم الذي يصوم فيه المسلمون؟',answer:'رمضان',options:[{text:'رجب',correct:false},{text:'رمضان',correct:true},{text:'شعبان',correct:false},{text:'شوال',correct:false}],mediaData:null,mediaType:null},
-  {type:'q',text:'كم عدد ركعات صلاة العيد؟',answer:'ركعتان',options:[],mediaData:null,mediaType:null},
-  {type:'q',text:'ما معنى كلمة "فطر" في عيد الفطر؟',answer:'الإفطار بعد الصوم',options:[],mediaData:null,mediaType:null},
-  {type:'q',text:'ما هي الأطعمة المشهورة في العيد عندكم؟',answer:'',options:[],mediaData:null,mediaType:null},
-  {type:'q',text:'في أي وقت تُصلى صلاة العيد؟',answer:'بعد شروق الشمس',options:[],mediaData:null,mediaType:null},
-  {type:'q',text:'ما اسم السورة التي تُقرأ في صلاة العيد؟',answer:'سورة الأعلى أو الغاشية',options:[],mediaData:null,mediaType:null},
-  {type:'q',text:'ماذا نقول عند التهنئة بالعيد؟',answer:'عيد مبارك / كل عام وأنتم بخير',options:[],mediaData:null,mediaType:null},
-  {type:'q',text:'ما هي زكاة الفطر وعلى من تجب؟',answer:'تجب على كل مسلم مستطيع',options:[],mediaData:null,mediaType:null},
-  {type:'c',text:'قل 5 أسماء أكلات العيد في 10 ثوانٍ!',answer:'',options:[],mediaData:null,mediaType:null},
-  {type:'c',text:'قلّد شخصاً يستلم عيدية صغيرة ويتظاهر أنها كبيرة!',answer:'',options:[],mediaData:null,mediaType:null},
-  {type:'c',text:'اذكر 5 أفراد من عائلتك وصف كل واحد بكلمة واحدة!',answer:'',options:[],mediaData:null,mediaType:null},
-  {type:'c',text:'غنّ أي أغنية للعيد بصوت عالٍ لـ5 ثوانٍ!',answer:'',options:[],mediaData:null,mediaType:null},
-  {type:'c',text:'قلّد أحد أفراد العائلة والبقية تخمّنوا!',answer:'',options:[],mediaData:null,mediaType:null},
-  {type:'c',text:'احكِ ذكرى مضحكة من أحد أعياد الماضي!',answer:'',options:[],mediaData:null,mediaType:null},
+  {type:'q',text:'ما هو الشهر الكريم الذي يصوم فيه المسلمون؟',answer:'رمضان',options:[{text:'رجب',correct:false},{text:'رمضان',correct:true},{text:'شعبان',correct:false},{text:'شوال',correct:false}],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'q',text:'كم عدد ركعات صلاة العيد؟',answer:'ركعتان',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'q',text:'ما معنى كلمة "فطر" في عيد الفطر؟',answer:'الإفطار بعد الصوم',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'q',text:'ما هي الأطعمة المشهورة في العيد عندكم؟',answer:'',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'q',text:'في أي وقت تُصلى صلاة العيد؟',answer:'بعد شروق الشمس',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'q',text:'ما اسم السورة التي تُقرأ في صلاة العيد؟',answer:'سورة الأعلى أو الغاشية',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'q',text:'ماذا نقول عند التهنئة بالعيد؟',answer:'عيد مبارك / كل عام وأنتم بخير',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'q',text:'ما هي زكاة الفطر وعلى من تجب؟',answer:'تجب على كل مسلم مستطيع',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'c',text:'قل 5 أسماء أكلات العيد في 10 ثوانٍ!',answer:'',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'c',text:'قلّد شخصاً يستلم عيدية صغيرة ويتظاهر أنها كبيرة!',answer:'',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'c',text:'اذكر 5 أفراد من عائلتك وصف كل واحد بكلمة واحدة!',answer:'',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'c',text:'غنّ أي أغنية للعيد بصوت عالٍ لـ5 ثوانٍ!',answer:'',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'c',text:'قلّد أحد أفراد العائلة والبقية تخمّنوا!',answer:'',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
+  {type:'c',text:'احكِ ذكرى مضحكة من أحد أعياد الماضي!',answer:'',options:[],mediaData:null,mediaType:null,answerMediaData:null,answerMediaType:null},
 ];
 function loadDefaults(){G.items=DEF_ITEMS.map(i=>({...i,options:[...i.options]}));renderItems();}
 
@@ -806,7 +852,7 @@ function startGame(){
   let prizes=Array.from(document.querySelectorAll('.prize-field')).map(i=>i.value.trim()).filter(Boolean);
   if(prizes.length===0){loadDefaultPrizes();prizes=DEF_PRIZES.slice();}
   G.prizes=prizes;
-  G.gameName=document.getElementById('gameNameInput').value||'فعاليات اللاري';
+  G.gameName=document.getElementById('gameNameInput').value||'زواره بلس';
   document.getElementById('gameHeaderTitle').textContent=G.gameName+' 🎊';
   document.getElementById('welcomeTitle').textContent=G.gameName;
   G.envelopeCount=envCount;
@@ -1001,8 +1047,16 @@ function openEnvelope(i){
   }
   // Answer reveal
   document.getElementById('answerReveal').classList.remove('show');document.getElementById('answerReveal').style.display='none';
-  if(env.answer){
-    document.getElementById('answerRevealText').textContent=env.answer;
+  const answerMediaDiv=document.getElementById('answerRevealMedia');
+  answerMediaDiv.classList.add('hidden');answerMediaDiv.innerHTML='';
+  if(env.answer||env.answerMediaData){
+    if(env.answer) document.getElementById('answerRevealText').textContent=env.answer;
+    else document.getElementById('answerRevealText').textContent='';
+    if(env.answerMediaData){
+      answerMediaDiv.innerHTML=env.answerMediaType==='video'
+        ?`<video src="${env.answerMediaData}" controls style="width:100%;max-height:240px;border-radius:12px;margin-top:6px;"></video>`
+        :`<img src="${env.answerMediaData}" style="width:100%;max-height:240px;object-fit:contain;border-radius:12px;margin-top:6px;">`;
+    }
     document.getElementById('showAnswerBtn').classList.remove('hidden');
   } else {
     document.getElementById('showAnswerBtn').classList.add('hidden');
@@ -1031,8 +1085,12 @@ function selectMCOption(idx,isCorrect){
 }
 
 function revealAnswer(){
-  document.getElementById('answerReveal').style.display='block';
-  document.getElementById('answerReveal').classList.add('show');
+  const revealDiv=document.getElementById('answerReveal');
+  revealDiv.style.display='block';
+  revealDiv.classList.add('show');
+  // Show answer media if available
+  const mediaDiv=document.getElementById('answerRevealMedia');
+  if(mediaDiv.innerHTML.trim()) mediaDiv.classList.remove('hidden');
 }
 
 // ===== ANSWER HANDLING =====
