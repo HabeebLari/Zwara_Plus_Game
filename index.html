@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>زواره بلس</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars" id="starsContainer"></div>
+<div class="lantern-wrap" id="lanternWrap"></div>
+
+<!-- =========== WELCOME =========== -->
+<div class="screen active" id="screenWelcome">
+  <div class="brand-logo">
+    <div class="logo-badge">🎊 لعبة العائلة</div>
+    <span class="larry-moon">🌙</span>
+    <div class="game-title-display" id="welcomeTitle">زواره بلس</div>
+    <div class="larry-sub">✦ عيد مبارك ✦</div>
+  </div>
+  <div class="container">
+    <div class="card card-gold" style="text-align:center;margin-bottom:18px;">
+      <p style="font-size:1.05rem;color:rgba(255,255,255,0.58);line-height:1.95;margin-bottom:22px;">لعبة عائلية لإحياء أجواء العيد 🌟<br>أظرف مليئة بالأسئلة والتحديات<br>روليت لاختيار اللاعب • دوامة الجوائز!</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-gold btn-xl" onclick="startNewGame()">🎮 لعبة جديدة</button>
+        <button class="btn btn-purple" onclick="goTo('screenMyGames')">📚 ألعابي</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('rulesModal').classList.add('open')">📋 القواعد</button>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">💾</div><div class="feature-title">حفظ الألعاب</div><div class="feature-desc">اسئلتك محفوظة دائماً</div></div>
+      <div class="feature-card"><div class="feature-icon">🎯</div><div class="feature-title">جوائز مرتبطة</div><div class="feature-desc">جائزة تعتمد على ظهور جائزة قبلها</div></div>
+      <div class="feature-card"><div class="feature-icon">🔄</div><div class="feature-title">إعادة الدوران</div><div class="feature-desc">دوّر مجدداً عند الحاجة</div></div>
+      <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">كميات محددة</div><div class="feature-desc">كل جائزة بعدد معين</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== MY GAMES =========== -->
+<div class="screen" id="screenMyGames">
+  <div class="brand-logo" style="padding-top:58px;padding-bottom:8px;">
+    <div class="game-title-display" style="font-size:clamp(1.7rem,5vw,2.8rem);">📚 ألعابي</div>
+  </div>
+  <div class="container">
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+      <button class="btn btn-gold" onclick="startNewGame()">➕ لعبة جديدة</button>
+      <button class="btn btn-ghost" onclick="goTo('screenWelcome')">← الرئيسية</button>
+    </div>
+    <div id="savedGamesList">
+      <div class="alert alert-info" style="text-align:center;">لا توجد ألعاب محفوظة بعد. أنشئ لعبتك الأولى! 🎮</div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== SETUP =========== -->
+<div class="screen" id="screenSetup">
+  <div class="brand-logo" style="padding-top:58px;padding-bottom:8px;">
+    <div class="game-title-display" style="font-size:clamp(1.7rem,5vw,2.8rem);" id="setupTitle">إعداد اللعبة</div>
+  </div>
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" id="tab1btn" onclick="switchTab(1)">① الاسم والمحتوى</button>
+      <button class="tab-btn" id="tab2btn" onclick="switchTab(2)">② الأظرف والجوائز</button>
+      <button class="tab-btn" id="tab3btn" onclick="switchTab(3)">③ اللاعبون</button>
+    </div>
+    <div class="steps">
+      <div class="step-dot active" id="sd1"></div>
+      <div class="step-dot" id="sd2"></div>
+      <div class="step-dot" id="sd3"></div>
+    </div>
+
+    <!-- TAB 1 -->
+    <div id="tab1">
+      <div class="card card-gold" style="margin-bottom:14px;">
+        <div class="section-title">✨ اسم اللعبة</div>
+        <div class="form-row">
+          <input type="text" id="gameNameInput" placeholder="مثال: فعاليات العيد / يمعتنا / ليلة العيد" oninput="updateGameNamePreview()" value="زواره بلس">
+        </div>
+        <div class="game-name-preview" id="gameNamePreview">زواره بلس</div>
+        <div class="name-suggestions">
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('زواره بلس')">زواره بلس</button>
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('فعاليات اللاري')">فعاليات اللاري</button>
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('فعاليات العيد')">فعاليات العيد</button>
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('يمعتنا 🎊')">يمعتنا 🎊</button>
+          <button class="btn btn-ghost btn-sm" onclick="setGameName('ليلة العيد ✨')">ليلة العيد ✨</button>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <!-- Item Builder -->
+      <div class="item-builder">
+        <div class="item-builder-header">➕ إضافة سؤال أو تحدي</div>
+        <div class="form-row">
+          <div>
+            <label>النوع</label>
+            <select id="itemType">
+              <option value="q">❓ سؤال</option>
+              <option value="c">🎯 تحدي</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label>نص السؤال / التحدي</label>
+            <textarea id="itemText" placeholder="اكتب نص السؤال أو التحدي هنا..." rows="2"></textarea>
+          </div>
+        </div>
+        <div class="form-row" id="answerFieldRow">
+          <div>
+            <label>الإجابة الصحيحة <span style="color:rgba(255,255,255,0.35);font-weight:400;">(اختياري)</span></label>
+            <input type="text" id="itemAnswer" placeholder="مثال: رمضان المبارك">
+          </div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label>صورة أو فيديو للإجابة <span style="color:rgba(255,255,255,0.35);font-weight:400;">(اختياري)</span></label>
+          <div class="media-upload-area" onclick="document.getElementById('answerMediaFileInput').click()">
+            <input type="file" id="answerMediaFileInput" accept="image/*,video/*" onchange="handleAnswerMediaUpload(event)">
+            <div id="answerMediaUploadPrompt">
+              <div style="font-size:1.8rem;margin-bottom:5px;">✅📎</div>
+              <div style="font-size:0.88rem;color:rgba(255,255,255,0.45);">اضغط لرفع صورة أو فيديو للإجابة</div>
+            </div>
+            <div id="answerMediaPreviewArea" class="media-preview hidden"></div>
+          </div>
+          <button class="btn btn-sm" id="clearAnswerMediaBtn" style="background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.25);color:#FF8A8A;display:none;margin-top:6px;" onclick="clearAnswerMedia()">✕ حذف وسائط الإجابة</button>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <label style="margin:0;">خيارات الإجابة <span style="color:rgba(255,255,255,0.35);font-weight:400;">(اختياري)</span></label>
+            <button class="btn btn-ghost-cyan btn-sm" onclick="addOptionRow()">+ إضافة خيار</button>
+          </div>
+          <div id="optionsList" class="options-list"></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label>صورة أو فيديو للسؤال <span style="color:rgba(255,255,255,0.35);font-weight:400;">(اختياري)</span></label>
+          <div class="media-upload-area" onclick="document.getElementById('mediaFileInput').click()">
+            <input type="file" id="mediaFileInput" accept="image/*,video/*" onchange="handleMediaUpload(event)">
+            <div id="mediaUploadPrompt">
+              <div style="font-size:2rem;margin-bottom:6px;">📎</div>
+              <div style="font-size:0.9rem;color:rgba(255,255,255,0.45);">اضغط لرفع صورة أو فيديو للسؤال</div>
+            </div>
+            <div id="mediaPreviewArea" class="media-preview hidden"></div>
+          </div>
+          <button class="btn btn-sm" id="clearMediaBtn" style="background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.25);color:#FF8A8A;display:none;" onclick="clearMedia()">✕ حذف الوسائط</button>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-gold" onclick="addItem()">✚ إضافة للقائمة</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadDefaults()">تحميل افتراضي</button>
+          <button class="btn btn-sm" style="background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.25);color:#FF8A8A;" onclick="clearItems()">مسح الكل</button>
+        </div>
+      </div>
+
+      <!-- Questions List -->
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:11px;">
+          <div class="section-title" style="margin-bottom:0;">
+            📝 القائمة
+            <span id="itemCount" style="background:rgba(244,196,48,0.13);border:1px solid rgba(244,196,48,0.28);border-radius:20px;padding:2px 10px;font-size:0.83rem;">0</span>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="saveCurrentGame()" id="saveBtn">💾 حفظ</button>
+        </div>
+        <div class="alert alert-info">💡 تُوزَّع الأسئلة عشوائياً على الأظرف — وتُحفظ تلقائياً عند الإضافة</div>
+        <div id="itemList" style="margin-top:10px;"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:18px;">
+        <button class="btn btn-gold" onclick="switchTab(2)">التالي ← الأظرف والجوائز</button>
+      </div>
+    </div>
+
+    <!-- TAB 2 -->
+    <div id="tab2" class="hidden">
+      <div class="card card-gold" style="margin-bottom:14px;">
+        <div class="section-title">✉️ عدد الأظرف</div>
+        <p style="font-size:0.86rem;color:rgba(255,255,255,0.4);margin-bottom:11px;">بمضاعفات 3 — من 3 إلى 30 ظرف</p>
+        <div class="counter-row">
+          <button class="counter-btn" onclick="changeEnvCount(-3)">−</button>
+          <div class="counter-val" id="envCountDisplay">9</div>
+          <button class="counter-btn" onclick="changeEnvCount(3)">+</button>
+        </div>
+      </div>
+      <div class="card card-purple">
+        <div class="section-title">🎁 جوائز الدوامة</div>
+        <div class="alert alert-info" style="margin-bottom:14px;">
+          💡 حدّد <strong>الكمية</strong> لكل جائزة • اختر <strong>تعتمد على</strong> لربط ظهور جائزة بجائزة سابقة
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 70px 130px 44px;gap:6px;margin-bottom:8px;padding:0 4px;">
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);font-weight:700;">الجائزة</div>
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);font-weight:700;text-align:center;">الكمية</div>
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);font-weight:700;text-align:center;">تعتمد على ظهور</div>
+          <div></div>
+        </div>
+        <div id="prizeInputs"></div>
+        <div style="display:flex;gap:8px;margin-top:11px;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="addPrizeRow()">+ إضافة جائزة</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadDefaultPrizes()">تحميل افتراضية</button>
+        </div>
+        <div style="margin-top:14px;">
+          <div class="section-title" style="font-size:1rem;margin-bottom:8px;">👁️ معاينة الجوائز</div>
+          <div id="prizePreview" class="prize-inventory"></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:18px;gap:12px;flex-wrap:wrap;">
+        <button class="btn btn-ghost" onclick="switchTab(1)">← السابق</button>
+        <button class="btn btn-gold" onclick="switchTab(3)">التالي ← اللاعبون</button>
+      </div>
+    </div>
+
+    <!-- TAB 3 -->
+    <div id="tab3" class="hidden">
+      <div class="card" style="margin-bottom:14px;">
+        <div class="section-title">👥 إضافة لاعبين</div>
+        <div class="form-row cols2">
+          <div>
+            <label>اسم اللاعب</label>
+            <input type="text" id="playerInput" placeholder="أدخل الاسم" onkeydown="if(event.key==='Enter')addPlayer()">
+          </div>
+          <div style="display:flex;align-items:flex-end;">
+            <button class="btn btn-pink btn-full" onclick="addPlayer()">+ إضافة</button>
+          </div>
+        </div>
+        <div id="playersList" class="players-grid"></div>
+        <div style="margin-top:11px;">
+          <button class="btn btn-ghost btn-sm" onclick="addDefaultPlayers()">إضافة لاعبين تجريبيين</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="section-title">📊 ملخص الإعداد</div>
+        <div class="sum-grid" id="summaryGrid"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:18px;gap:12px;flex-wrap:wrap;">
+        <button class="btn btn-ghost" onclick="switchTab(2)">← السابق</button>
+        <button class="btn btn-gold btn-lg" onclick="startGame()">🚀 ابدأ اللعبة!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== GAME =========== -->
+<div class="screen" id="screenGame">
+  <div class="game-header">
+    <div class="game-header-title" id="gameHeaderTitle">زواره بلس 🎊</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;">
+      <div class="info-chip">✉️ <span id="envsLeft">-</span></div>
+      <div class="info-chip">👥 <span id="playersCount">-</span></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="if(confirm('خروج؟'))goTo('screenWelcome')">✕</button>
+  </div>
+  <div class="container">
+    <div class="progress-wrap">
+      <div class="progress-fill" id="gameProgress" style="width:0%"></div>
+    </div>
+
+    <!-- ROULETTE PHASE -->
+    <div id="phaseRoulette">
+      <div class="phase-header">
+        <div class="phase-label">المرحلة الحالية</div>
+        <div class="phase-name">🎡 روليت الاختيار</div>
+        <div class="phase-sub">دوّر الروليت لاختيار اللاعب التالي</div>
+      </div>
+      <div class="roulette-wrap">
+        <canvas id="roulette-canvas" width="340" height="340" onclick="spinRoulette()"></canvas>
+        <div id="spinResult" class="spin-result hidden"></div>
+        <div id="rouletteBtn" style="margin-top:20px;text-align:center;">
+          <button class="btn btn-gold btn-xl" onclick="spinRoulette()">🎡 دوّر الروليت!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENVELOPES PHASE -->
+    <div id="phaseEnvelopes" class="hidden">
+      <div class="phase-header">
+        <div class="phase-label">الآن دور</div>
+        <div class="phase-name" id="activePlayerName">-</div>
+        <div class="phase-num-badge" id="activePlayerNum">رقم -</div>
+        <div class="phase-sub">اختر ظرفك!</div>
+      </div>
+      <div class="envelopes-grid" id="envelopesGrid"></div>
+    </div>
+
+    <!-- PRIZE PHASE -->
+    <div id="phasePrize" class="hidden">
+      <div class="phase-header" style="background:linear-gradient(135deg,rgba(255,107,157,0.13),rgba(244,196,48,0.06));border-color:rgba(255,107,157,0.25);">
+        <div class="phase-label">🎉 أجاب صح!</div>
+        <div class="phase-name" id="prizePlayerName">-</div>
+        <div class="phase-sub">دوّر دوامة الجوائز!</div>
+      </div>
+      <div class="prize-wrap">
+        <canvas id="prize-canvas" width="360" height="360" onclick="spinPrizeWheel()"></canvas>
+        <div id="prizePills" class="prize-inventory" style="margin-top:12px;justify-content:center;"></div>
+        <div id="prizeBtn" style="margin-top:18px;text-align:center;">
+          <button class="btn btn-gold btn-xl" onclick="spinPrizeWheel()">🎁 دوّر دوامة الجوائز!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== RESULTS =========== -->
+<div class="screen" id="screenResults">
+  <div class="brand-logo">
+    <span class="larry-moon">🏆</span>
+    <div class="game-title-display">نهاية اللعبة!</div>
+    <div class="larry-sub">كل عام وأنتم بخير 🌙✨</div>
+  </div>
+  <div class="container">
+    <div class="card card-gold" style="margin-bottom:20px;">
+      <div class="section-title" style="justify-content:center;font-size:1.3rem;">🥇 لوحة الشرف</div>
+      <div id="finalScores"></div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-gold btn-xl" onclick="restartGame()">🔄 لعب مجدداً</button>
+      <button class="btn btn-ghost" onclick="goTo('screenWelcome')">🏠 الرئيسية</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========== CARD MODAL =========== -->
+<div class="modal-overlay" id="cardModal">
+  <div class="modal">
+    <span class="modal-icon" id="modalIcon">✉️</span>
+    <div class="modal-type-badge" id="modalBadge">سؤال</div>
+    <div class="modal-title" id="modalTitle">السؤال</div>
+    <div class="modal-media hidden" id="modalMedia"></div>
+    <div class="modal-question" id="modalQuestion">-</div>
+    <div id="modalOptions" class="mc-options hidden"></div>
+    <div class="answer-reveal" id="answerReveal">
+      <div class="answer-reveal-label">✅ الإجابة الصحيحة</div>
+      <div id="answerRevealText" style="margin-bottom:8px;">-</div>
+      <div id="answerRevealMedia" class="hidden" style="margin-top:10px;border-radius:12px;overflow:hidden;max-height:240px;"></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-show-answer hidden" id="showAnswerBtn" onclick="revealAnswer()">👁️ أظهر الإجابة</button>
+      <button class="btn btn-green btn-lg" id="correctBtn" onclick="handleAnswer(true)">✅ أجاب صح</button>
+      <button class="btn btn-red btn-lg" id="wrongBtn" onclick="handleAnswer(false)">❌ أجاب غلط</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========== PRIZE CELEBRATE =========== -->
+<div class="prize-celebrate-overlay" id="prizeCelebrate">
+  <div class="prize-celebrate-box">
+    <span class="prize-celebrate-emoji" id="celebrateEmoji">🎁</span>
+    <div class="prize-celebrate-label">🎊 الجائزة الفائزة هي</div>
+    <div class="prize-celebrate-name" id="celebratePrizeName">-</div>
+    <div class="celebrate-respin" id="celebrateRespinInfo"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-gold btn-xl" id="celebrateNextBtn" onclick="closeCelebrate(false)">التالي ✨</button>
+      <button class="btn btn-ghost" id="celebrateRespinBtn" onclick="closeCelebrate(true)" style="display:none;">🔄 دوّر مجدداً</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========== RULES MODAL =========== -->
+<div class="modal-overlay" id="rulesModal">
+  <div class="modal" style="max-width:570px;text-align:right;">
+    <span class="modal-icon" style="display:block;text-align:center;">📋</span>
+    <div class="modal-title" style="text-align:center;font-size:1.5rem;margin-bottom:18px;">قواعد اللعبة</div>
+    <div style="line-height:2.2;font-size:0.93rem;color:rgba(255,255,255,0.65);">
+      <p>1️⃣ المنسق يضع الأسئلة والتحديات والجوائز مسبقاً</p>
+      <p>2️⃣ كل جائزة لها <strong style="color:var(--gold);">كمية محددة</strong> — إذا انتهت لا تظهر مجدداً</p>
+      <p>3️⃣ يمكن ربط جائزة بجائزة سابقة (<strong style="color:var(--gold);">تعتمد عليها</strong>)</p>
+      <p>4️⃣ الروليت تختار اللاعب بالرقم العشوائي</p>
+      <p>5️⃣ ✅ إجابة صحيحة ← دوامة الجوائز</p>
+      <p>6️⃣ ❌ إجابة خاطئة ← ينتهي الدور</p>
+      <p>7️⃣ المنسق يختار إعادة الدوران أو الانتقال</p>
+      <p>8️⃣ الأسئلة تُحفظ تلقائياً في ألعابي 💾</p>
+    </div>
+    <div style="text-align:center;margin-top:22px;">
+      <button class="btn btn-gold btn-lg" onclick="document.getElementById('rulesModal').classList.remove('open')">فهمت! 👍</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
